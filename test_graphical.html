@@ -123,6 +123,25 @@
               self.y = y;
               self.draw();
             };
+            this.intersect = function(obj){
+              minFirstX = self.x;
+              maxFirstX = self.x+self.width;
+              minFirstY = self.y;
+              maxFirstY = self.y + self.height;
+
+              minSecondX = obj.x;
+              maxSecondX = obj.x + obj.width;
+              minSecondy = obj.y;
+              maxSecondy = obj.y + obj.width;
+
+              if (maxFirstX < minSecondX) return false; 
+              if (minFirstX > maxSecondX) return false; 
+              if (maxFirstY < minSecondy) return false; 
+              if (minFirstY > maxSecondy) return false; 
+              return true; // boxes overlap
+
+
+            };
           }
 
           function listGraphObj(){
@@ -159,8 +178,6 @@
               if(self.graphObj){
                 self.ofx=x-self.graphObj.x;
                 self.ofy=y-self.graphObj.y;
-                console.log(self.ofx);
-                console.log(self.ofy);
               }
             };
             this.onMove = function(x,y){
@@ -170,6 +187,8 @@
             };
             this.onUpp = function(){
               self.graphObj = false;
+              self.ofx = 0;
+              self.ofy = 0;
             };
 
           }
@@ -197,16 +216,20 @@
         // Render our SVG image to the canvas once it loads.
         arrow.onload = function(){
             var arr = new graphObj('type');
+            var arr2 = new graphObj('type');
             var listob = new  listGraphObj();
             listob.add(arr);
+            listob.add(arr2);
             var canHan = new canHandler(listob);
 
             canvas.addEventListener("mousedown", function msdwn(evt){
+
                  var mousePos = getMousePos(canvas, evt);
                  canHan.onClick(mousePos.x,mousePos.y);
             }, false);
 
             canvas.addEventListener('mousemove', function(evt) {
+                console.log(arr.intersect(arr2));
                 var mousePos = getMousePos(canvas, evt);
                 canHan.onMove(mousePos.x,mousePos.y);
                 }, false);
