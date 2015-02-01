@@ -92,90 +92,58 @@
 
 
 ///////////////////////////////////////////////////////////////////////////
-    
-
-        var E = 210*10000000;
-var I = 3;
-
-// Rad 1 och 6 kan tas bort från ekv- och w-listorna. 
-//Momentfritt stöd till vänster ger:
-var wv = 0;   // ingen utböjning
-var w2v = 100;  // momentfritt
-var qv = 0;     // pålagd kraft
-var w4v = qv;
-var xv = 0; 
-//stryker ekvationerna 2-1=1 och 4-1=3 (kan strycka 1 också)
-
-//Fast inspänd till höger ger:
-var wh = 0;
-var w1h = 0;
-var qh = 0;
-var w4h = qh;
-var xh = 1;
-//stryker ekvationerna 4+5-1=8 och 5+5-1=9 ty höger
-
-var ekv = [[qv, 0, 0, 0, 0],
-//[qv*xv, 1, 0, 0, 0,],
-[qv*Math.pow(xv,2)/2, xv, 1, 0, 0],
-//[qv*Math.pow(xv,3)/6, Math.pow(xv,2)/2, xv, 1, 0],
-[qv*Math.pow(xv,4)/24, Math.pow(xv,3)/6, Math.pow(xv,2)/2, xv, 1],
-[qh, 0, 0, 0, 0],
-[qh*xh, 1, 0, 0, 0,],
-[qh*Math.pow(xh,2)/2, xh, 1, 0, 0]
-//[qh*Math.pow(xh,3)/6, Math.pow(xh,2)/2, xh, 1, 0],
-//[qh*Math.pow(xh,4)/24, Math.pow(xh,3)/6, Math.pow(xh,2)/2, xh, 1]
-];
-
-// Matrisen som genereras är konst = [1, A, B, C, D];
-
-var w = [E*I*w4v, 
-//E*I*w3v, 
-E*I*w2v, 
-//E*I*w1v, 
-E*I*wv, 
-E*I*w4h, 
-//E*I*w3h, 
-//E*I*w2h, 
-E*I*w1h, 
-E*I*wh
-];
+        
 
 
 
+        (function (){
+          function graphObj(type){
+            var self = this;
+            this.type = type;
+            this.img = arrow;
+            this.x = 0;
+            this.y = 0;
+            this.height = 40;
+            this.width = 40;
+            this.draw = function(){
+              context.beginPath();
+              context.drawImage(self.img,self.x,self.y,self.height,self.width);
+            };
+            this.draw();
 
+            this.isInside = function(x,y){
+              return x>this.x && x<(this.x+this.width) && y>this.y && y<(this.y+this.height);
+            };
 
+            this.moveTo = function(x,y){
+              context.beginPath();
+              context.fillStyle = "#FFFFFF";
+              context.fillRect(this.x,this.y,this.width,this.height);
+            };
+
+            
+
+          }
 
         var canvas = document.getElementById('myCanvas');
-        
-        
-    
-    
-   function doCalcPoint(A,B,C,D,x,i,e,q){
-              return ((1/e*i) *(q*x*x*x*x/2*A + A*x*x*x/6+ B*x*x/2 + C*x + D));
+        // Set up our canvas on the page before doing anything.  
+        // Get drawing context for the Canvas
+        var context = canvas.getContext('2d');
+          
+        // Load up our image.
+        var arrow = new Image();
+        arrow.src = 'http://sbstechnologies.in/Workshop/Brushed/Source%20Files/ICONS%20+%20FONT/Icons/SVG/arrow-round-left.svg';
+        arrow.width = '100';
+        arrow.height = '100';
+        // Render our SVG image to the canvas once it loads.
+        arrow.onload = function(){
+            var arr = new graphObj('type');
+            
           }
-       
-          function begin(){
-          var i = 1;
-          var e = 200000000;
-          var q = -100000000;
-          var a = [[0,0,0,1],[0,0,1,0],[1,0,0,0],[1,1,0,0]];
-          var b = [0,0,-q/e,0];
-         
-          var ainv = numeric.inv(a);
-          var ans = numeric.dot(ainv,b);
-          var ma = [];
-          console.log(ans);
 
-          for (var n=0; n <= 500; n++) {
-            ma.push([n,doCalcPoint(ans[0],ans[1],ans[2],ans[3],n/500,i,e,q)*500+250])
-          };
-          console.log(ma);
-          plotLine(canvas,ma);
-
+        })();
         
-      }
         
-        begin();
         //var testcon = canvas.getContext('2d');
         //plotPoints(canvas,A, 10);
         //plotLine(canvas,A);
