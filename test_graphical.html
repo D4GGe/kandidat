@@ -112,19 +112,52 @@
             this.draw();
 
             this.isInside = function(x,y){
-              return x>this.x && x<(this.x+this.width) && y>this.y && y<(this.y+this.height);
+              return x>self.x && x<(self.x+self.width) && y>self.y && y<(self.y+self.height);
             };
 
             this.moveTo = function(x,y){
               context.beginPath();
               context.fillStyle = "#FFFFFF";
-              context.fillRect(this.x,this.y,this.width,this.height);
+              context.fillRect(self.x,self.y,self.width,self.height);
+              self.x = x;
+              self.y = y;
+              self.draw();
+            };
+          }
+
+          function listGraphObj(){
+            var self = this;
+            this.list = new Array();
+            this.add = function(graphObj){
+              self.list.push(graphObj);
             };
 
+            this.delete = function (obj){
+              console.log('delet is not implemented yet');
+              // Object.is(value1, value2);
+            };
             
+            this.findByCord = function(x,y){
+              for (var i = 0 ; i < self.list.length; i++) {
+                if(self.list[i].isInside(x,y)){
+                  console.log("dfsa");
+                  return self.list[i];
+                }
+              };
+              return false;
+            };
 
           }
 
+          function canHandler(){
+            self = this;
+            graphObj = false;
+
+
+
+
+
+          }
         var canvas = document.getElementById('myCanvas');
         // Set up our canvas on the page before doing anything.  
         // Get drawing context for the Canvas
@@ -137,8 +170,30 @@
         arrow.height = '100';
         // Render our SVG image to the canvas once it loads.
         arrow.onload = function(){
+            canvas.addEventListener("mousedown", msdwn, false);
             var arr = new graphObj('type');
-            
+            var listob = new  listGraphObj();
+            listob.add(arr);
+
+
+            canvas.addEventListener('mousemove', function(evt) {
+            var mousePos = getMousePos(canvas, evt);
+            arr.moveTo(mousePos.x,mousePos.y);
+            }, false);
+            function getMousePos(canvas, evt) {
+              var rect = canvas.getBoundingClientRect();
+                return {
+                  x: evt.clientX - rect.left,
+                  y: evt.clientY - rect.top
+                };
+              }
+
+            function msdwn(evt){
+                 var mousePos = getMousePos(canvas, evt);
+                 console.log(mousePos);
+            }
+            console.log(listob.findByCord(10,10));
+             
           }
 
         })();
