@@ -140,7 +140,6 @@
             this.findByCord = function(x,y){
               for (var i = 0 ; i < self.list.length; i++) {
                 if(self.list[i].isInside(x,y)){
-                  console.log("dfsa");
                   return self.list[i];
                 }
               };
@@ -149,16 +148,43 @@
 
           }
 
-          function canHandler(){
+          function canHandler(listo){
+            ofx = 0;
+            ofy = 0;
             self = this;
-            graphObj = false;
-
-
-
-
+            this.listGraphObj = listo;
+            this.graphObj = false;
+            this.onClick = function(x,y){
+              self.graphObj = self.listGraphObj.findByCord(x,y);
+              if(self.graphObj){
+                self.ofx=x-self.graphObj.x;
+                self.ofy=y-self.graphObj.y;
+                console.log(self.ofx);
+                console.log(self.ofy);
+              }
+            };
+            this.onMove = function(x,y){
+              if(self.graphObj){
+                self.graphObj.moveTo(x-self.ofx,y-self.ofy);
+              }
+            };
+            this.onUpp = function(){
+              self.graphObj = false;
+            };
 
           }
+
         var canvas = document.getElementById('myCanvas');
+        
+
+            function getMousePos(canvas, evt) {
+              var rect = canvas.getBoundingClientRect();
+                return {
+                  x: evt.clientX - rect.left,
+                  y: evt.clientY - rect.top
+                };
+              }
+
         // Set up our canvas on the page before doing anything.  
         // Get drawing context for the Canvas
         var context = canvas.getContext('2d');
@@ -170,31 +196,26 @@
         arrow.height = '100';
         // Render our SVG image to the canvas once it loads.
         arrow.onload = function(){
-            canvas.addEventListener("mousedown", msdwn, false);
             var arr = new graphObj('type');
             var listob = new  listGraphObj();
             listob.add(arr);
+            var canHan = new canHandler(listob);
 
+            canvas.addEventListener("mousedown", function msdwn(evt){
+                 var mousePos = getMousePos(canvas, evt);
+                 canHan.onClick(mousePos.x,mousePos.y);
+            }, false);
 
             canvas.addEventListener('mousemove', function(evt) {
-            var mousePos = getMousePos(canvas, evt);
-            arr.moveTo(mousePos.x,mousePos.y);
-            }, false);
-            function getMousePos(canvas, evt) {
-              var rect = canvas.getBoundingClientRect();
-                return {
-                  x: evt.clientX - rect.left,
-                  y: evt.clientY - rect.top
-                };
+                var mousePos = getMousePos(canvas, evt);
+                canHan.onMove(mousePos.x,mousePos.y);
+                }, false);
+            canvas.addEventListener('mouseup', function(evt) {
+                canHan.onUpp();
+                //arr.moveTo(mousePos.x,mousePos.y);
+                }, false);
+                 
               }
-
-            function msdwn(evt){
-                 var mousePos = getMousePos(canvas, evt);
-                 console.log(mousePos);
-            }
-            console.log(listob.findByCord(10,10));
-             
-          }
 
         })();
         
