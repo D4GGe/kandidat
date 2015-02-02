@@ -1,29 +1,28 @@
-
-
-
-
 <!DOCTYPE HTML>
 <html>
-  <head>
+<head>
     <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
-  </head>
-  <body>
-    <canvas id="myCanvas" width="500" height="500" style="border-style: solid;
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500" style="border-style: solid;
     border-width: 5px;"></canvas>
-    <button type="button" id ="beam">add beam</button>
-    <button type="button" id="arrow">add arrow</button>
-  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-  <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
-    <script>
+<button type="button" id="beam">add beam</button>
+<button type="button" id="arrow">add arrow</button>
+<input type="text" id="xCord">
+<input type="text" id="yCord">
+<button type="button" id="uppdate">update cordinates</button>
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+<script>
     /*
-    ------------------info------------------
-    For matrix operations and so on. http://numericjs.com/documentation.html
-    For basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
+     ------------------info------------------
+     For matrix operations and so on. http://numericjs.com/documentation.html
+     For basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
 
 
      the '/' in matlab or gauss elemenitation  is preformd like folows:     
@@ -32,212 +31,247 @@
      * x + y + z = 6
      * 2x + y + 2z = 10
      * x + 2y + 3z = 14
-        A = [[1, 1, 1],
-              [2, 1, 2], 
-              [1, 2, 3]];
+     A = [[1, 1, 1],
+     [2, 1, 2],
+     [1, 2, 3]];
 
-        x = [6, 10, 14];
-        result = gauss($A, $x);
-    */
-
-
+     x = [6, 10, 14];
+     result = gauss($A, $x);
+     */
 
 
 
 
-////////////  helpers by Daniel ////////////////////////////////////
-    function plotLine(can , matrix){
-      var context = can.getContext('2d');
-      context.beginPath();
-      context.moveTo(mathToWebCord(matrix[0],can.height)[0],mathToWebCord(matrix[0],can.height)[1]);
-      for (var i = 0; i <= matrix.length - 1; i++) {  
-          context.lineTo(mathToWebCord(matrix[i],can.height)[0],mathToWebCord(matrix[i],can.height)[1]);
-      };
-      context.stroke();
+
+
+    ////////////  helpers by Daniel ////////////////////////////////////
+    function plotLine(can, matrix) {
+        var context = can.getContext('2d');
+        context.beginPath();
+        context.moveTo(mathToWebCord(matrix[0], can.height)[0], mathToWebCord(matrix[0], can.height)[1]);
+        for (var i = 0; i <= matrix.length - 1; i++) {
+            context.lineTo(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1]);
+        }
+        ;
+        context.stroke();
     }
 
-    function plotPoints(can , matrix,size){
-      var context = can.getContext('2d');   
-      for (var i = 0; i <= matrix.length - 1; i++) {  
-          context.beginPath();
-          context.arc(mathToWebCord(matrix[i],can.height)[0], mathToWebCord(matrix[i],can.height)[1], size, 0, 2 * Math.PI, true);
-          
-          context.fill();
-          
-      };
-      
+    function plotPoints(can, matrix, size) {
+        var context = can.getContext('2d');
+        for (var i = 0; i <= matrix.length - 1; i++) {
+            context.beginPath();
+            context.arc(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1], size, 0, 2 * Math.PI, true);
+
+            context.fill();
+
+        }
+        ;
+
     }
 
-     function mathToWebCord(cord,ySize){
-      x = cord[0];
-      y = cord[1];
-      return [x,ySize-y];
-     }
+    function mathToWebCord(cord, ySize) {
+        var x = cord[0];
+        var y = cord[1];
+        return [x, ySize - y];
+    }
 
-     function webToMathCord(cord,ySize){
-      x = cord[0];
-      y = cord[1];
-      return [x,y-ySize];
-     
-     }
+    function webToMathCord(cord, ySize) {
+        x = cord[0];
+        y = cord[1];
+        return [x, y - ySize];
 
-     function createMatrix(start,end,inc,func){
-      var ans = [];
-      for (var i = start; i<=end; i=i+inc) {
-        ans.push([i,func(i)]);
-        console.log(i);
-      };
-      return ans;
-     }
+    }
 
-
-///////////////////////////////////////////////////////////////////////////
-        
+    function createMatrix(start, end, inc, func) {
+        var ans = [];
+        for (var i = start; i <= end; i = i + inc) {
+            ans.push([i, func(i)]);
+            console.log(i);
+        }
+        ;
+        return ans;
+    }
 
 
+    ///////////////////////////////////////////////////////////////////////////
 
-        (function (){
-          function graphObj(type){
+
+    (function () {
+        function graphObj(type) {
             var self = this;
             this.type = type;
-            if(type === 'arrow'){
-              this.img = arrow;
-              this.height = 40;
-              this.width = 40;
-            }else{
-              this.img = beam;
-              this.height = 100;
-              this.width = 200;
+            this.border = 'none';
+
+            if (type === 'arrow') {
+                this.img = arrow;
+                this.height = 40;
+                this.width = 40;
+            } else {
+                this.img = beam;
+                this.height = 100;
+                this.width = 200;
             }
 
             this.x = 0;
             this.y = 0;
-            
-            this.draw = function(){
-              
-              context.beginPath();
-              context.drawImage(self.img,self.x,self.y,self.width,self.height);
+            this.clearDraw = function () {
+                context.beginPath();
+                context.fillStyle = "#FFFFFF";
+                context.fillRect(self.x, self.y, self.width, self.height);
+                self.draw();
+            }
+            this.draw = function () {
+                context.beginPath();
+                context.drawImage(self.img, self.x, self.y, self.width, self.height);
+                if (self.border != 'none') {
+                    context.beginPath();
+                    context.strokeStyle = self.border;
+                    context.rect(self.x + 1, self.y + 1, self.width - 2, self.height - 2);
+                    context.stroke();
+                }
+                updateFields();
+                createRows();
             };
-            
 
-            this.isInside = function(x,y){
-              return x>self.x && x<(self.x+self.width) && y>self.y && y<(self.y+self.height);
+
+            this.isInside = function (x, y) {
+                return x > self.x && x < (self.x + self.width) && y > self.y && y < (self.y + self.height);
             };
 
-            this.moveTo = function(x,y){
-              context.beginPath();
-              context.fillStyle = "#FFFFFF";
-              context.fillRect(self.x,self.y,self.width,self.height);
-              self.x = x;
-              self.y = y;
-              self.draw();
+            this.moveTo = function (x, y) {
+                context.beginPath();
+                context.fillStyle = "#FFFFFF";
+                context.fillRect(self.x, self.y, self.width, self.height);
+                self.x = Math.round(x / 40) * 40;
+                self.y = Math.round(y / 40) * 40;
+                self.draw();
             };
-            this.intersect = function(obj){
-              minFirstX = self.x;
-              maxFirstX = self.x+self.width;
-              minFirstY = self.y;
-              maxFirstY = self.y + self.height;
+            this.setBorder = function (style) {
+                self.border = style;
+            };
 
-              minSecondX = obj.x;
-              maxSecondX = obj.x + obj.width;
-              minSecondy = obj.y;
-              maxSecondy = obj.y + obj.width;
+            this.intersect = function (obj) {
+                minFirstX = self.x;
+                maxFirstX = self.x + self.width;
+                minFirstY = self.y;
+                maxFirstY = self.y + self.height;
 
-              if (maxFirstX < minSecondX) return false; 
-              if (minFirstX > maxSecondX) return false; 
-              if (maxFirstY < minSecondy) return false; 
-              if (minFirstY > maxSecondy) return false; 
-              return true; // boxes overlap
+                minSecondX = obj.x;
+                maxSecondX = obj.x + obj.width;
+                minSecondy = obj.y;
+                maxSecondy = obj.y + obj.width;
+
+                if (maxFirstX < minSecondX) return false;
+                if (minFirstX > maxSecondX) return false;
+                if (maxFirstY < minSecondy) return false;
+                if (minFirstY > maxSecondy) return false;
+                return true; // boxes overlap
 
 
             };
-          }
+        }
 
-          function listGraphObj(){
+        function listGraphObj() {
             var self = this;
             this.list = new Array();
-            this.add = function(graphObj){
-              self.list.push(graphObj);
-              graphObj.draw();
+            this.add = function (graphObj) {
+                self.list.push(graphObj);
+                graphObj.draw();
             };
 
-            this.delete = function (obj){
-              console.log('delet is not implemented yet');
-              // Object.is(value1, value2);
+            this.delete = function (obj) {
+                console.log('delet is not implemented yet');
+                // Object.is(value1, value2);
             };
-            
-            this.findByCord = function(x,y){
-              for (var i = 0 ; i < self.list.length; i++) {
-                if(self.list[i].isInside(x,y)){
-                  return self.list[i];
+
+            this.findByCord = function (x, y) {
+                for (var i = 0; i < self.list.length; i++) {
+                    if (self.list[i].isInside(x, y)) {
+                        return self.list[i];
+                    }
                 }
-              };
+                ;
 
-              return false;
+                return false;
             };
 
-            this.intersect = function(obj){
-              var tempList = new Array();
-              for (var i = 0 ; i < self.list.length; i++) {
-                if(!Object.is(self.list[i],obj) && self.list[i].intersect(obj)){
-                  tempList.push(self.list[i]);
+            this.intersect = function (obj) {
+                var tempList = [];
+                for (var i = 0; i < self.list.length; i++) {
+                    if (!Object.is(self.list[i], obj) && self.list[i].intersect(obj)) {
+                        tempList.push(self.list[i]);
+                    }
                 }
-              };
-              if (tempList.length) {
-                return tempList;
-              } 
-              return false;
+                ;
+                if (tempList.length) {
+                    return tempList;
+                }
+                return false;
             };
 
-          }
+        }
 
-          function canHandler(listo){
-            ofx = 0;
-            ofy = 0;
-            self = this;
+        function canHandler(listo) {
+
+            var self = this;
+            this.ofx = 0;
+            this.ofy = 0;
             this.listGraphObj = listo;
             this.graphObj = false;
-            this.onClick = function(x,y){
-              self.graphObj = self.listGraphObj.findByCord(x,y);
-              if(self.graphObj){
-                self.ofx=x-self.graphObj.x;
-                self.ofy=y-self.graphObj.y;
-              }
+            this.graphObjMarked = false;
+            this.onClick = function (x, y) {
+                self.graphObj = self.listGraphObj.findByCord(x, y);
+                if (self.graphObj) {
+                    self.ofx = x - self.graphObj.x;
+                    self.ofy = y - self.graphObj.y;
+                }
             };
-            this.onMove = function(x,y){
-              if(self.graphObj){
-                var tempList = self.listGraphObj.intersect(self.graphObj);
-                console.log(tempList);
-                self.graphObj.moveTo(x-self.ofx,y-self.ofy);
-                for (var i = tempList.length - 1; i >= 0; i--) {
-                  tempList[i].draw();
-                };
-                self.graphObj.draw();
-              }
+            this.onMove = function (x, y) {
+                if (self.graphObj) {
+                    var tempList = self.listGraphObj.intersect(self.graphObj);
+
+                    self.graphObj.moveTo(x - self.ofx, y - self.ofy);
+                    for (var i = tempList.length - 1; i >= 0; i--) {
+                        tempList[i].draw();
+                    }
+                    self.graphObj.draw();
+                }
             };
-            this.onUpp = function(){
-              self.graphObj = false;
-              self.ofx = 0;
-              self.ofy = 0;
+            this.onUpp = function () {
+                self.graphObj = false;
+                self.ofx = 0;
+                self.ofy = 0;
+            };
+            this.onRightClick = function (x, y) {
+                if (self.graphObjMarked) {
+                    self.graphObjMarked.setBorder('none');
+                    self.graphObjMarked.clearDraw();
+                }
+                self.graphObjMarked = self.listGraphObj.findByCord(x, y);
+                if (self.graphObjMarked) {
+                    self.graphObjMarked.setBorder('blue');
+                    self.graphObjMarked.draw();
+                }
+                updateFields();
             };
 
-          }
+        }
 
         var canvas = document.getElementById('myCanvas');
-        
 
-            function getMousePos(canvas, evt) {
-              var rect = canvas.getBoundingClientRect();
-                return {
-                  x: evt.clientX - rect.left,
-                  y: evt.clientY - rect.top
-                };
-              }
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
 
         // Set up our canvas on the page before doing anything.  
         // Get drawing context for the Canvas
         var context = canvas.getContext('2d');
-          
+
         // Load up our image.
         var arrow = new Image();
         arrow.src = 'http://uxrepo.com/static/icon-sets/ionicons/svg/ios7-arrow-thin-down.svg';
@@ -248,46 +282,113 @@
         beam.width = '1000';
         beam.height = '500';
         // Render our SVG image to the canvas once it loads.
-        arrow.onload = function(){
-          
-            var listob = new  listGraphObj();
-            var canHan = new canHandler(listob);
-            $('#beam').click(function(){
-              listob.add(new graphObj('beam'));
-            });
 
-            $('#arrow').click(function(){
-              listob.add(new graphObj('arrow'));
-              });
-              
-            canvas.addEventListener("mousedown", function msdwn(evt){
 
-                 var mousePos = getMousePos(canvas, evt);
-                 canHan.onClick(mousePos.x,mousePos.y);
-            }, false);
+        function updateFields() {
+            if (canHan.graphObjMarked) {
+                $('#xCord').val(canHan.graphObjMarked.x);
+                $('#yCord').val(canHan.graphObjMarked.y);
+            } else {
+                $('#xCord').val(0);
+                $('#yCord').val(0);
+            }
+        }
 
-            canvas.addEventListener('mousemove', function(evt) {
-                var mousePos = getMousePos(canvas, evt);
-                canHan.onMove(mousePos.x,mousePos.y);
-                }, false);
-            canvas.addEventListener('mouseup', function(evt) {
-                canHan.onUpp();
-                //arr.moveTo(mousePos.x,mousePos.y);
-                }, false);
-                 
-              }
+        function createRows() {
+            context.beginPath();
+            context.strokeStyle = "#eee";
+            for (var i = 0; i < 500; i = i + 40) {
+                context.moveTo(0, i);
+                context.lineTo(500, i);
+                context.moveTo(i, 0);
+                context.lineTo(i, 500);
+            }
+            context.stroke();
+        }
 
-        })();
-        
-        
-        //var testcon = canvas.getContext('2d');
-        //plotPoints(canvas,A, 10);
-        //plotLine(canvas,A);
-     // var context = canvas.getContext('2d');
-     // context.beginPath();
-     // context.moveTo(100, 150);
-     // context.lineTo(450, 50);
-     // context.stroke();
-    </script>
-  </body>
+        createRows();
+        var listob = new listGraphObj();
+        var canHan = new canHandler(listob);
+
+        $('#beam').click(function () {
+            listob.add(new graphObj('beam'));
+        });
+
+        $('#arrow').click(function () {
+            listob.add(new graphObj('arrow'));
+        });
+
+        $('#uppdate').click(function () {
+
+            if (canHan.graphObjMarked) {
+                canHan.graphObjMarked.moveTo($('#xCord').val(), $('#yCord').val());
+            }
+
+        });
+        window.onkeydown = function (evt) {
+            var tempObj = canHan.graphObjMarked;
+            if (tempObj) {
+
+                switch (evt.keyIdentifier) {
+                    case 'Up':
+                        tempObj.moveTo(tempObj.x, tempObj.y - 40);
+                        break;
+                    case 'Down':
+                        tempObj.moveTo(tempObj.x, tempObj.y + 40);
+                        break;
+                    case 'Right':
+                        tempObj.moveTo(tempObj.x + 40, tempObj.y);
+                        break;
+                    case 'Left':
+                        tempObj.moveTo(tempObj.x - 40, tempObj.y);
+                        break;
+                    default :
+                        console.log('unknown key:' + evt.keyIdentifier);
+
+                }
+                var tempList = listob.intersect(tempObj);
+                if (tempList) {
+                    for (var i = tempList.length - 1; i >= 0; i--) {
+                        tempList[i].draw();
+                    }
+                }
+            }
+
+        };
+        canvas.addEventListener("contextmenu", function (evt) {
+            evt.preventDefault();
+            var mousePos = getMousePos(canvas, evt);
+            canHan.onRightClick(mousePos.x, mousePos.y);
+
+        }, false);
+
+        canvas.addEventListener("mousedown", function (evt) {
+
+            var mousePos = getMousePos(canvas, evt);
+            canHan.onClick(mousePos.x, mousePos.y);
+        }, false);
+
+        canvas.addEventListener('mousemove', function (evt) {
+            var mousePos = getMousePos(canvas, evt);
+            canHan.onMove(mousePos.x, mousePos.y);
+        }, false);
+        canvas.addEventListener('mouseup', function (evt) {
+            canHan.onUpp();
+            //arr.moveTo(mousePos.x,mousePos.y);
+        }, false);
+
+
+    })();
+
+
+    //var testcon = canvas.getContext('2d');
+    //plotPoints(canvas,A, 10);
+    //plotLine(canvas,A);
+    // var context = canvas.getContext('2d');
+    // context.beginPath();
+    // context.moveTo(100, 150);
+    // context.lineTo(450, 50);
+    // context.stroke();
+</script>
+</body>
 </html>     
