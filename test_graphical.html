@@ -142,8 +142,8 @@
                 context.beginPath();
                 context.fillStyle = "#FFFFFF";
                 context.fillRect(self.x, self.y, self.width, self.height);
-                self.x = Math.round(x / 40) * 40;
-                self.y = Math.round(y / 40) * 40;
+                self.x = Math.round(x / 10) * 10;
+                self.y = Math.round(y / 10) * 10;
                 self.draw();
             };
             this.setBorder = function (style) {
@@ -297,7 +297,7 @@
         function createRows() {
             context.beginPath();
             context.strokeStyle = "#eee";
-            for (var i = 0; i < 500; i = i + 40) {
+            for (var i = 0; i < 500; i = i + 20) {
                 context.moveTo(0, i);
                 context.lineTo(500, i);
                 context.moveTo(i, 0);
@@ -331,16 +331,16 @@
 
                 switch (evt.keyIdentifier) {
                     case 'Up':
-                        tempObj.moveTo(tempObj.x, tempObj.y - 40);
+                        tempObj.moveTo(tempObj.x, tempObj.y - 10);
                         break;
                     case 'Down':
-                        tempObj.moveTo(tempObj.x, tempObj.y + 40);
+                        tempObj.moveTo(tempObj.x, tempObj.y + 10);
                         break;
                     case 'Right':
-                        tempObj.moveTo(tempObj.x + 40, tempObj.y);
+                        tempObj.moveTo(tempObj.x + 10, tempObj.y);
                         break;
                     case 'Left':
-                        tempObj.moveTo(tempObj.x - 40, tempObj.y);
+                        tempObj.moveTo(tempObj.x - 10, tempObj.y);
                         break;
                     default :
                         console.log('unknown key:' + evt.keyIdentifier);
