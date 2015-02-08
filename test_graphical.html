@@ -114,12 +114,7 @@
 
             this.x = 0;
             this.y = 0;
-            this.clearDraw = function () {
-                context.beginPath();
-                context.fillStyle = "#FFFFFF";
-                context.fillRect(self.x, self.y, self.width, self.height);
-                self.draw();
-            }
+            
             this.draw = function () {
                 context.beginPath();
                 context.drawImage(self.img, self.x, self.y, self.width, self.height);
@@ -130,7 +125,6 @@
                     context.stroke();
                 }
                 updateFields();
-                createRows();
             };
 
 
@@ -140,14 +134,14 @@
 
             this.moveTo = function (x, y) {
                 context.beginPath();
-                context.fillStyle = "#FFFFFF";
-                context.fillRect(self.x, self.y, self.width, self.height);
-                self.x = Math.round(x / 40) * 40;
-                self.y = Math.round(y / 40) * 40;
-                self.draw();
+                self.x = Math.round(x / 10) * 10;
+                self.y = Math.round(y / 10) * 10;
+                $(document).trigger("canvasChange");
+                
             };
             this.setBorder = function (style) {
                 self.border = style;
+                $(document).trigger("canvasChange");
             };
 
             this.intersect = function (obj) {
@@ -176,11 +170,15 @@
             this.list = new Array();
             this.add = function (graphObj) {
                 self.list.push(graphObj);
-                graphObj.draw();
+                $(document).trigger("canvasChange");
             };
 
             this.delete = function (obj) {
-                console.log('delet is not implemented yet');
+                var index = self.list.indexOf(obj);
+                self.list.splice(index, index+1);
+                $(document).trigger("canvasChange");
+                console.log(self.list);
+                console.log(index);
                 // Object.is(value1, value2);
             };
 
@@ -228,13 +226,7 @@
             };
             this.onMove = function (x, y) {
                 if (self.graphObj) {
-                    var tempList = self.listGraphObj.intersect(self.graphObj);
-
                     self.graphObj.moveTo(x - self.ofx, y - self.ofy);
-                    for (var i = tempList.length - 1; i >= 0; i--) {
-                        tempList[i].draw();
-                    }
-                    self.graphObj.draw();
                 }
             };
             this.onUpp = function () {
@@ -245,15 +237,47 @@
             this.onRightClick = function (x, y) {
                 if (self.graphObjMarked) {
                     self.graphObjMarked.setBorder('none');
-                    self.graphObjMarked.clearDraw();
                 }
                 self.graphObjMarked = self.listGraphObj.findByCord(x, y);
                 if (self.graphObjMarked) {
                     self.graphObjMarked.setBorder('blue');
-                    self.graphObjMarked.draw();
                 }
                 updateFields();
             };
+
+            this.createRows = function() {
+            context.beginPath();
+            context.strokeStyle = "#eee";
+            for (var i = 0; i < 500; i = i + 10) {
+                context.moveTo(0, i);
+                context.lineTo(500, i);
+                context.moveTo(i, 0);
+                context.lineTo(i, 500);
+            }
+            context.stroke();
+            }
+        this.markNext = function() {
+            var temp = self.listGraphObj.list;
+            self.graphObjMarked.setBorder('none');
+            console.log(temp.indexOf(self.graphObjMarked)+1%(temp.length-1));
+            self.graphObjMarked = temp[temp.indexOf(self.graphObjMarked)+1%(temp.length-1)];
+
+        }
+
+        this.draw = function() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            
+
+            self.createRows();
+            for (var i = 0; i < self.listGraphObj.list.length; i++) {
+                self.listGraphObj.list[i].draw();
+             
+            };
+        }
+        $(document).on("canvasChange", function(e){
+            self.draw();
+
+            });
 
         }
 
@@ -294,24 +318,12 @@
             }
         }
 
-        function createRows() {
-            context.beginPath();
-            context.strokeStyle = "#eee";
-            for (var i = 0; i < 500; i = i + 40) {
-                context.moveTo(0, i);
-                context.lineTo(500, i);
-                context.moveTo(i, 0);
-                context.lineTo(i, 500);
-            }
-            context.stroke();
-        }
-
-        createRows();
         var listob = new listGraphObj();
         var canHan = new canHandler(listob);
 
         $('#beam').click(function () {
-            listob.add(new graphObj('beam'));
+            //listob.add(new graphObj('beam'));
+            listob.delete(canHan.graphObjMarked);
         });
 
         $('#arrow').click(function () {
@@ -326,22 +338,25 @@
 
         });
         window.onkeydown = function (evt) {
+            evt.preventDefault();
             var tempObj = canHan.graphObjMarked;
             if (tempObj) {
 
                 switch (evt.keyIdentifier) {
                     case 'Up':
-                        tempObj.moveTo(tempObj.x, tempObj.y - 40);
+                        tempObj.moveTo(tempObj.x, tempObj.y - 10);
                         break;
                     case 'Down':
-                        tempObj.moveTo(tempObj.x, tempObj.y + 40);
+                        tempObj.moveTo(tempObj.x, tempObj.y + 10);
                         break;
                     case 'Right':
-                        tempObj.moveTo(tempObj.x + 40, tempObj.y);
+                        tempObj.moveTo(tempObj.x + 10, tempObj.y);
                         break;
                     case 'Left':
-                        tempObj.moveTo(tempObj.x - 40, tempObj.y);
+                        tempObj.moveTo(tempObj.x - 10, tempObj.y);
                         break;
+                    case 'U+0009':
+                        canHan.markNext();
                     default :
                         console.log('unknown key:' + evt.keyIdentifier);
 
