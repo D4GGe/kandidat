@@ -93,97 +93,88 @@
 
 ///////////////////////////////////////////////////////////////////////////
     
+  (function () {
+    function happening(type, xCord,load,EI){
+      self = this;
+      this.xCord = xCord;
+      this.type = type;
+      this.length = length;
+      this.ekv = [[EI,0,0,0],[xCord*EI,EI,0,0],[xCord*xCord/2*EI,xCord*EI,EI,0],[xCord*xCord*xCord/6*EI,xCord*xCord/2*EI,xCord*EI,EI]];
+      switch (type){
+        case "fixedSupport":
+          this.vecEnd = [self.ekv[2] , self.ekv[3]];
+          this.fEnd = [0, 0];
+          this.vecMid = null;
+          this.fMid = null;
 
-        var E = 210*10000000;
-var I = 3;
-
-// Rad 1 och 6 kan tas bort från ekv- och w-listorna. 
-//Momentfritt stöd till vänster ger:
-var wv = 0;   // ingen utböjning
-var w2v = 100;  // momentfritt
-var qv = 0;     // pålagd kraft
-var w4v = qv;
-var xv = 0; 
-//stryker ekvationerna 2-1=1 och 4-1=3 (kan strycka 1 också)
-
-//Fast inspänd till höger ger:
-var wh = 0;
-var w1h = 0;
-var qh = 0;
-var w4h = qh;
-var xh = 1;
-//stryker ekvationerna 4+5-1=8 och 5+5-1=9 ty höger
-
-var ekv = [[qv, 0, 0, 0, 0],
-//[qv*xv, 1, 0, 0, 0,],
-[qv*Math.pow(xv,2)/2, xv, 1, 0, 0],
-//[qv*Math.pow(xv,3)/6, Math.pow(xv,2)/2, xv, 1, 0],
-[qv*Math.pow(xv,4)/24, Math.pow(xv,3)/6, Math.pow(xv,2)/2, xv, 1],
-[qh, 0, 0, 0, 0],
-[qh*xh, 1, 0, 0, 0,],
-[qh*Math.pow(xh,2)/2, xh, 1, 0, 0]
-//[qh*Math.pow(xh,3)/6, Math.pow(xh,2)/2, xh, 1, 0],
-//[qh*Math.pow(xh,4)/24, Math.pow(xh,3)/6, Math.pow(xh,2)/2, xh, 1]
-];
-
-// Matrisen som genereras är konst = [1, A, B, C, D];
-
-var w = [E*I*w4v, 
-//E*I*w3v, 
-E*I*w2v, 
-//E*I*w1v, 
-E*I*wv, 
-E*I*w4h, 
-//E*I*w3h, 
-//E*I*w2h, 
-E*I*w1h, 
-E*I*wh
-];
-
-
-
-
-
-
-        var canvas = document.getElementById('myCanvas');
-        
-        
-    
-    
-   function doCalcPoint(A,B,C,D,x,i,e,q){
-              return ((1/e*i) *(q*x*x*x*x/2*A + A*x*x*x/6+ B*x*x/2 + C*x + D));
-          }
-       
-          function begin(){
-          var i = 1;
-          var e = 200000000;
-          var q = -100000000;
-          var a = [[0,0,0,1],[0,0,1,0],[1,0,0,0],[1,1,0,0]];
-          var b = [0,0,-q/e,0];
-         
-          var ainv = numeric.inv(a);
-          var ans = numeric.dot(ainv,b);
-          var ma = [];
-          console.log(ans);
-
-          for (var n=0; n <= 500; n++) {
-            ma.push([n,doCalcPoint(ans[0],ans[1],ans[2],ans[3],n/500,i,e,q)*500+250])
-          };
-          console.log(ma);
-          plotLine(canvas,ma);
-
-        
+          break;
+        case "momentFreeSupport":
+          this.vecEnd = [self.ekv[1],self.ekv[3]];
+          this.fEnd = [0,0];
+          //vec 3 - vec 4
+          this.vecMid =[self.ekv[3].concat(numeric.neg(self.ekv[3])),self.ekv[2].concat(numeric.neg(self.ekv[2])),self.ekv[1].concat(self.ekv[1]),self.ekv[0].concat(self.ekv[0])];
+          this.fMid = [0,0,0,0];
+          break;
+        case "load":
+          this.vecEnd = [self.ekv[0],self.ekv[1]];
+          this.fEnd = [-load*EI,0];
+          this.vecMid =[self.ekv[3].concat(numeric.neg(self.ekv[3])),self.ekv[2].concat(numeric.neg(self.ekv[2])),self.ekv[1].concat(self.ekv[1]),self.ekv[0].concat(self.ekv[0])];
+          this.fMid = [0,0,0,-load*EI];
       }
+    }
+    function addZeroes (index, vec, len){
+      var before= [];
+      var after = [];
+      for (var i = 0; i < 4*(index-1) ; i++) {
+        before.push(0);
+      };
+      for (var i = 0; i < 4*(len-index-2); i++) {
+        after.push(0);
+              };
+              return before.concat(vec.concat(after));
+    }
+
+    function createMatrix (has){
+      var len = has.length;
+      var matrix = [];
+      var fVec =[];
+      for (var i =0; i < len; i++) {
+        var hap = has[i];
+        console.log(i);
+        if (i == 0 || i == len-1 ) {
+
+          matrix.push(addZeroes(i,hap.vecEnd[0],len));
+          fVec.push(hap.fEnd[0]);
+          matrix.push(addZeroes(i,hap.vecEnd[1],len));
+          fVec.push(hap.fEnd[1]);
+        } else{
+          matrix.push(addZeroes(i,hap.vecMid[0],len));
+          fVec.push(hap.fMid[0]);
+          matrix.push(addZeroes(i,hap.vecMid[1],len));
+          fVec.push(hap.fMid[1]);
+          matrix.push(addZeroes(i,hap.vecMid[2],len));
+          fVec.push(hap.fMid[2]);
+          matrix.push(addZeroes(i,hap.vecMid[3],len));
+          fVec.push(hap.fMid[3]);
+        };
         
-        begin();
-        //var testcon = canvas.getContext('2d');
-        //plotPoints(canvas,A, 10);
-        //plotLine(canvas,A);
-     // var context = canvas.getContext('2d');
-     // context.beginPath();
-     // context.moveTo(100, 150);
-     // context.lineTo(450, 50);
-     // context.stroke();
+      };
+      console.log(fVec);
+
+    }
+
+     function test(){
+        var has = [new happening("fixedSupport",0,0,1),new happening("load",1,-1,1), new happening("momentFreeSupport",2,0,1),new happening("momentFreeSupport",3,0,1),new happening("momentFreeSupport",4,0,1)];
+        createMatrix(has);
+
+      }
+      test();
+
+
+  })();
+
+
+
     </script>
   </body>
 </html>     
