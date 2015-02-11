@@ -13,7 +13,7 @@
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" width="500" height="500" style="border-style: solid;
+    <canvas id="myCanvas" width="1000" height="1000" style="border-style: solid;
     border-width: 5px;"></canvas>
     
   <script src="http://349.se/gauss.js"></script>
@@ -47,6 +47,7 @@
 
 ////////////  helpers by Daniel ////////////////////////////////////
     function plotLine(can , matrix){
+
       var context = can.getContext('2d');
       context.beginPath();
       context.moveTo(mathToWebCord(matrix[0],can.height)[0],mathToWebCord(matrix[0],can.height)[1]);
@@ -99,6 +100,7 @@
       this.xCord = xCord;
       this.type = type;
       this.length = length;
+      this.EI = EI;
       this.ekv = [[EI,0,0,0],[xCord*EI,EI,0,0],[xCord*xCord/2*EI,xCord*EI,EI,0],[xCord*xCord*xCord/6*EI,xCord*xCord/2*EI,xCord*EI,EI]];
       switch (type){
         case "fixedSupport":
@@ -148,6 +150,7 @@
           matrix.push(addZeroes(i,hap.vecEnd[1],len));
           fVec.push(hap.fEnd[1]);
         } else{
+
           matrix.push(addZeroes(i,hap.vecMid[0],len));
           fVec.push(hap.fMid[0]);
           matrix.push(addZeroes(i,hap.vecMid[1],len));
@@ -157,15 +160,57 @@
           matrix.push(addZeroes(i,hap.vecMid[3],len));
           fVec.push(hap.fMid[3]);
         };
+
         
       };
-      console.log(fVec);
 
+      var ainv = numeric.inv(matrix);
+      var ans = numeric.dot(ainv,fVec);
+      return ans;
+      
     }
 
+    function deflection(k,has,h){
+      w=[];
+      for (var i = 0; i < has.length-1; i++) {
+        constVec = [k[4*i],k[4*i+1],k[4*i+2],k[4*i+3]];
+        var EI = has[i].EI; 
+        for (var x = has[i].xCord; x < has[i+1].xCord; x=x+h) {
+          var wEkv =[EI*x*x*x/6, EI*x*x/2, EI*x,EI];
+          w.push(numeric.dot(wEkv,constVec));
+        };
+      };
+          return w;
+    }
+
+
      function test(){
+
         var has = [new happening("fixedSupport",0,0,1),new happening("load",1,-1,1), new happening("momentFreeSupport",2,0,1),new happening("momentFreeSupport",3,0,1),new happening("momentFreeSupport",4,0,1)];
-        createMatrix(has);
+
+          var defl = deflection(createMatrix(has),has,0.005);
+          defl = numeric.mul(-1000,defl);
+          defl = numeric.add(250,defl);
+
+          var canvas = document.getElementById('myCanvas');
+          var context = canvas.getContext('2d');
+          context.beginPath();
+          context.moveTo(0,defl[0]);
+          for (var i = 1; i <= defl.length - 1; i++) {  
+              context.lineTo(i,defl[i]);
+          };
+          context.stroke();
+          context.beginPath();
+          context.strokeStyle = "red";
+          context.moveTo(0,250);
+          context.lineTo(1000,250);
+          context.stroke();
+          context.beginPath;
+          context.fillStyle="blue";
+          context.fillRect(1/0.005,250,4,4);
+          context.fillRect(2/0.005,250,4,4);
+          context.fillRect(3/0.005,250,4,4);
+
 
       }
       test();
