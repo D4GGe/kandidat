@@ -114,13 +114,13 @@
           this.vecEnd = [self.ekv[1],self.ekv[3]];
           this.fEnd = [0,0];
           //vec 3 - vec 4
-          this.vecMid =[self.ekv[3].concat(numeric.neg(self.ekv[3])),self.ekv[2].concat(numeric.neg(self.ekv[2])),self.ekv[1].concat(self.ekv[1]),self.ekv[0].concat(self.ekv[0])];
+          this.vecMid =[self.ekv[3].concat([0,0,0,0]),([0,0,0,0]).concat(self.ekv[3]),self.ekv[2].concat(numeric.neg(self.ekv[2])),self.ekv[1].concat(self.ekv[1])];
           this.fMid = [0,0,0,0];
           break;
         case "load":
           this.vecEnd = [self.ekv[0],self.ekv[1]];
           this.fEnd = [-load*EI,0];
-          this.vecMid =[self.ekv[3].concat(numeric.neg(self.ekv[3])),self.ekv[2].concat(numeric.neg(self.ekv[2])),self.ekv[1].concat(self.ekv[1]),self.ekv[0].concat(self.ekv[0])];
+          this.vecMid =[self.ekv[3].concat(numeric.neg(self.ekv[3])),self.ekv[2].concat(numeric.neg(self.ekv[2])),self.ekv[1].concat(numeric.neg(self.ekv[1])),self.ekv[0].concat(numeric.neg(self.ekv[0]))];
           this.fMid = [0,0,0,-load*EI];
       }
     }
@@ -142,7 +142,6 @@
       var fVec =[];
       for (var i =0; i < len; i++) {
         var hap = has[i];
-        console.log(i);
         if (i == 0 || i == len-1 ) {
 
           matrix.push(addZeroes(i,hap.vecEnd[0],len));
@@ -175,7 +174,9 @@
       for (var i = 0; i < has.length-1; i++) {
         constVec = [k[4*i],k[4*i+1],k[4*i+2],k[4*i+3]];
         var EI = has[i].EI; 
+        var count = 0;
         for (var x = has[i].xCord; x < has[i+1].xCord; x=x+h) {
+          count++;
           var wEkv =[EI*x*x*x/6, EI*x*x/2, EI*x,EI];
           w.push(numeric.dot(wEkv,constVec));
         };
@@ -186,7 +187,8 @@
 
      function test(){
 
-        var has = [new happening("fixedSupport",0,0,1),new happening("load",1,-1,1), new happening("momentFreeSupport",2,0,1),new happening("momentFreeSupport",3,0,1),new happening("momentFreeSupport",4,0,1)];
+        //var has = [new happening("momentFreeSupport",0,0,1),new happening("load",1,1,1), new happening("momentFreeSupport",2,0,1)];
+        var has = [new happening("momentFreeSupport",0,0,1),  new happening("load",1,1,1), new happening("momentFreeSupport",2,0,1),new happening("load",2.5,-1,1), new happening("momentFreeSupport",3,0,1),new happening("momentFreeSupport",4,0,1)];
 
           var defl = deflection(createMatrix(has),has,0.005);
           defl = numeric.mul(-1000,defl);
@@ -207,9 +209,9 @@
           context.stroke();
           context.beginPath;
           context.fillStyle="blue";
-          context.fillRect(1/0.005,250,4,4);
-          context.fillRect(2/0.005,250,4,4);
-          context.fillRect(3/0.005,250,4,4);
+          context.fillRect(200,250,4,4);
+          context.fillRect(400,250,4,4);
+          context.fillRect(600,250,4,4);
 
 
       }
