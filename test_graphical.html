@@ -1,411 +1,663 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <style>
-        body {
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
-</head>
-<body>
-<canvas id="myCanvas" width="500" height="500" style="border-style: solid;
-    border-width: 5px;"></canvas>
-<button type="button" id="beam">add beam</button>
-<button type="button" id="arrow">add arrow</button>
-<input type="text" id="xCord">
-<input type="text" id="yCord">
-<button type="button" id="uppdate">update cordinates</button>
-<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
-<script>
-    /*
-     ------------------info------------------
-     For matrix operations and so on. http://numericjs.com/documentation.html
-     For basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
+  <!DOCTYPE HTML>
+  <html>
+  <head>
+      <style>
+          body {
+              margin: 0px;
+              padding: 0px;
+          }
+          button{
+              z-index: 40;
+          }
+
+          #menu {
+                  position: absolute;
+                  left: 100px;
+                  top: 15px;
+                  z-index: 99;
+                  width: 300px;
+                  height: 300px;
+
+          }
+
+          #background {
+              position: absolute;
+              height: 100vw;
+              width: 100vw;
+              z-index: 10;
+              background-color: #555;
+              opacity: 0.6;
+
+          }
+          ul{
+              padding: 0;
+              margin: 0;
+              width: 300px;
+              height: 300px;
+
+          }
+          #menu ul li {
+          list-style-type: none;
+          padding: 0px;
+          margin: 0px;
+          position: relative;
+          display: inline;
+          margin-left: -12px;
+          }
+          #menu ul li:nth-child(1) {
+              top: 0px;
+              left: 150px;
+              margin-left: 0px !important;
+
+          }
+
+          #menu ul li:nth-child(2) {
+              top: 44px;
+              left: 256px;
 
 
-     the '/' in matlab or gauss elemenitation  is preformd like folows:     
-
-     * Solves this system:
-     * x + y + z = 6
-     * 2x + y + 2z = 10
-     * x + 2y + 3z = 14
-     A = [[1, 1, 1],
-     [2, 1, 2],
-     [1, 2, 3]];
-
-     x = [6, 10, 14];
-     result = gauss($A, $x);
-     */
+          }
+          #menu ul li:nth-child(3) {
+              top: 150px;
+              left: 300px;
 
 
+          }
+          #menu ul li:nth-child(4) {
+              top: 256px;
+              left: 256px;
 
 
+          }
 
+          #menu ul li:nth-child(5) {
+              top: 300px;
+              left: 150px;
+          }
+          #menu ul li:nth-child(6) {
+              top: 256px;
+              left: 44px;
 
-    ////////////  helpers by Daniel ////////////////////////////////////
-    function plotLine(can, matrix) {
-        var context = can.getContext('2d');
-        context.beginPath();
-        context.moveTo(mathToWebCord(matrix[0], can.height)[0], mathToWebCord(matrix[0], can.height)[1]);
-        for (var i = 0; i <= matrix.length - 1; i++) {
-            context.lineTo(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1]);
-        }
-        ;
-        context.stroke();
-    }
-
-    function plotPoints(can, matrix, size) {
-        var context = can.getContext('2d');
-        for (var i = 0; i <= matrix.length - 1; i++) {
-            context.beginPath();
-            context.arc(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1], size, 0, 2 * Math.PI, true);
-
-            context.fill();
-
-        }
-        ;
-
-    }
-
-    function mathToWebCord(cord, ySize) {
-        var x = cord[0];
-        var y = cord[1];
-        return [x, ySize - y];
-    }
-
-    function webToMathCord(cord, ySize) {
-        x = cord[0];
-        y = cord[1];
-        return [x, y - ySize];
-
-    }
-
-    function createMatrix(start, end, inc, func) {
-        var ans = [];
-        for (var i = start; i <= end; i = i + inc) {
-            ans.push([i, func(i)]);
-            console.log(i);
-        }
-        ;
-        return ans;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    (function () {
-        function graphObj(type) {
-            var self = this;
-            this.type = type;
-            this.border = 'none';
-
-            if (type === 'arrow') {
-                this.img = arrow;
-                this.height = 40;
-                this.width = 40;
-            } else {
-                this.img = beam;
-                this.height = 100;
-                this.width = 200;
-            }
-
-            this.x = 0;
-            this.y = 0;
-            
-            this.draw = function () {
-                context.beginPath();
-                context.drawImage(self.img, self.x, self.y, self.width, self.height);
-                if (self.border != 'none') {
-                    context.beginPath();
-                    context.strokeStyle = self.border;
-                    context.rect(self.x + 1, self.y + 1, self.width - 2, self.height - 2);
-                    context.stroke();
-                }
-                updateFields();
-            };
-
-
-            this.isInside = function (x, y) {
-                return x > self.x && x < (self.x + self.width) && y > self.y && y < (self.y + self.height);
-            };
-
-            this.moveTo = function (x, y) {
-                context.beginPath();
-                self.x = Math.round(x / 10) * 10;
-                self.y = Math.round(y / 10) * 10;
-                $(document).trigger("canvasChange");
-                
-
-            };
-            this.setBorder = function (style) {
-                self.border = style;
-                $(document).trigger("canvasChange");
-            };
-
-            this.intersect = function (obj) {
-                minFirstX = self.x;
-                maxFirstX = self.x + self.width;
-                minFirstY = self.y;
-                maxFirstY = self.y + self.height;
-
-                minSecondX = obj.x;
-                maxSecondX = obj.x + obj.width;
-                minSecondy = obj.y;
-                maxSecondy = obj.y + obj.width;
-
-                if (maxFirstX < minSecondX) return false;
-                if (minFirstX > maxSecondX) return false;
-                if (maxFirstY < minSecondy) return false;
-                if (minFirstY > maxSecondy) return false;
-                return true; // boxes overlap
-
-
-            };
-        }
-
-        function listGraphObj() {
-            var self = this;
-            this.list = new Array();
-            this.add = function (graphObj) {
-                self.list.push(graphObj);
-                $(document).trigger("canvasChange");
-            };
-
-            this.delete = function (obj) {
-                var index = self.list.indexOf(obj);
-                self.list.splice(index, index+1);
-                $(document).trigger("canvasChange");
-                console.log(self.list);
-                console.log(index);
-                // Object.is(value1, value2);
-            };
-
-            this.findByCord = function (x, y) {
-                for (var i = 0; i < self.list.length; i++) {
-                    if (self.list[i].isInside(x, y)) {
-                        return self.list[i];
+          }
+          #menu ul li:nth-child(7) {
+              top: 150px;
+              left: 0px;
+          }
+          #menu ul li:nth-child(8) {
+              top: 44px;
+              left: 44px;
+          }
+          #static_menu{
+            position: fixed;
+            top: 30px;
+            left: 30px;
+          }
+          #static_menu li {
+            list-style-type: none;
+            border-style:solid;
+            border-width:1px;
+            border-color:black;
+            height:30px;
+            width:30px;
+            float:left;
                     }
-                }
-                ;
+          #static_menu li:not(:first-child) {
+          background-color: blue;
+          display:none;
+          }
 
-                return false;
-            };
+      </style>
+  </head>
+  <body>
+  <div id="static_menu"> <ul>
+  	<li id="first_menu"></li>
+    <li></li>
+    <li></li>
+  </ul>
+  </div>
+  <div id="menu">
+  <ul id="listm">
+      <li >1</li>
+      <li >2</li>
+      <li >3</li>
+      <li >4</li>
+      <li >5</li>
+      <li >6</li>
+      <li >7</li>
+      <li >8</li>
+  </ul>
+  </div>
+  <div id="background"></div>
+  <canvas id="myCanvas" width="1500" height="800" style="border-style: solid;
+      border-width: 5px;"></canvas>
+      <button type="button" id="show">hide/show</button>
+  <button type="button" id="beam">delete</button>
+  <button type="button" id="arrow">add arrow</button>
+  <input type="text" id="xCord">
+  <input type="text" id="yCord">
+  <button type="button" id="uppdate">update cordinates</button>
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+  <script src="http://349.se/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://349.se/css/bootstrap.min.css">
 
-            this.intersect = function (obj) {
-                var tempList = [];
-                for (var i = 0; i < self.list.length; i++) {
-                    if (!Object.is(self.list[i], obj) && self.list[i].intersect(obj)) {
-                        tempList.push(self.list[i]);
-                    }
-                }
-                ;
-                if (tempList.length) {
-                    return tempList;
-                }
-                return false;
-            };
+  <script>
+      /*
+       ------------------info------------------
+       For matrix operations and so on. http://numericjs.com/documentation.html
+       For basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
 
-        }
 
-        function canHandler(listo) {
+       the '/' in matlab or gauss elemenitation  is preformd like folows:
 
-            var self = this;
-            this.ofx = 0;
-            this.ofy = 0;
-            this.listGraphObj = listo;
-            this.graphObj = false;
-            this.graphObjMarked = false;
-            this.onClick = function (x, y) {
-                self.graphObj = self.listGraphObj.findByCord(x, y);
-                if (self.graphObj) {
-                    self.ofx = x - self.graphObj.x;
-                    self.ofy = y - self.graphObj.y;
-                }
-            };
-            this.onMove = function (x, y) {
-                if (self.graphObj) {
-                    self.graphObj.moveTo(x - self.ofx, y - self.ofy);
-                }
-            };
-            this.onUpp = function () {
-                self.graphObj = false;
-                self.ofx = 0;
-                self.ofy = 0;
-            };
-            this.onRightClick = function (x, y) {
-                if (self.graphObjMarked) {
-                    self.graphObjMarked.setBorder('none');
-                }
-                self.graphObjMarked = self.listGraphObj.findByCord(x, y);
-                if (self.graphObjMarked) {
-                    self.graphObjMarked.setBorder('blue');
-                }
-                updateFields();
-            };
+       * Solves this system:
+       * x + y + z = 6
+       * 2x + y + 2z = 10
+       * x + 2y + 3z = 14
+       A = [[1, 1, 1],
+       [2, 1, 2],
+       [1, 2, 3]];
 
-            this.createRows = function() {
-            context.beginPath();
-            context.strokeStyle = "#eee";
-            for (var i = 0; i < 500; i = i + 10) {
-                context.moveTo(0, i);
-                context.lineTo(500, i);
-                context.moveTo(i, 0);
-                context.lineTo(i, 500);
+       x = [6, 10, 14];
+       result = gauss($A, $x);
+       */
+
+
+
+
+
+
+      ////////////  helpers by Daniel ////////////////////////////////////
+      function plotLine(can, matrix) {
+          var context = can.getContext('2d');
+          context.beginPath();
+          context.moveTo(mathToWebCord(matrix[0], can.height)[0], mathToWebCord(matrix[0], can.height)[1]);
+          for (var i = 0; i <= matrix.length - 1; i++) {
+              context.lineTo(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1]);
+          };
+          context.stroke();
+      }
+
+      function plotPoints(can, matrix, size) {
+          var context = can.getContext('2d');
+          for (var i = 0; i <= matrix.length - 1; i++) {
+              context.beginPath();
+              context.arc(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1], size, 0, 2 * Math.PI, true);
+
+              context.fill();
+
+          }
+          ;
+
+      }
+
+      function mathToWebCord(cord, ySize) {
+          var x = cord[0];
+          var y = cord[1];
+          return [x, ySize - y];
+      }
+
+      function webToMathCord(cord, ySize) {
+          x = cord[0];
+          y = cord[1];
+          return [x, y - ySize];
+
+      }
+
+      function createMatrix(start, end, inc, func) {
+          var ans = [];
+          for (var i = start; i <= end; i = i + inc) {
+              ans.push([i, func(i)]);
+              console.log(i);
+          }
+          ;
+          return ans;
+      }
+
+
+      ///////////////////////////////////////////////////////////////////////////
+
+
+      (function () {
+
+          function menuHelper(listGraphObj) {
+            self = this;
+            this.listGraphObj = listGraphObj;
+            this.content = document.getElementById('listm');
+            this.list = [];
+            this.addLi = function(type,content){
+              var element = document.createElement("li");
+                  element.style.padding = "5px";
+
+              switch (type) {
+                case 'toFofce':
+                    element.style.background  = "red";
+                    element.onclick = function(){  };
+                  break;
+                case 'cordinates':
+                  var t = document.createTextNode(content);
+                  element.appendChild(t);
+                case 'rotate':
+                    var t = document.createTextNode('rotate');
+                    element.appendChild(t);
+                case 'addWidth':
+                    var t = document.createTextNode('+');
+                    element.appendChild(t);
+                    break;
+                case 'removeWidth':
+                    var t = document.createTextNode('-');
+                    element.appendChild(t);
+                case 'toss':
+                    var t = document.createTextNode('toss');
+                    element.appendChild(t);
+                default:
+
+              }
+              self.content.appendChild(element);
+              return element;
+            };
+            this.generateUl = function(obj){
+              self.clear();
+              switch (obj.type) {
+                case 'force':
+                  self.addLi('cordinates','x:'+canHan.graphObjMarked.x +', y: '+canHan.graphObjMarked.x);
+                  var rotate = self.addLi('rotate');
+                  rotate.onclick = function(){ obj.angle = -1; $(document).trigger("canvasChange"); console.log('det fungerar!');};
+                  break;
+                case 'beam':
+                  self.addLi('cordinates','x:'+canHan.graphObjMarked.x +', y: '+canHan.graphObjMarked.x).onclick = function () {
+                      var tempx = prompt("enter new x cordinates", "");
+                      var tempy = prompt("enter new y cordinates", "");
+                      obj.moveTo(tempx,tempy);
+                  };
+                  var rotate = self.addLi('rotate','');
+                  rotate.onclick = function(){ obj.angle = obj.angle * -1; $(document).trigger("canvasChange"); console.log('det fungerar!');};
+                  self.addLi('addWidth','').onclick = function(){obj.setWidth(obj.width + 50)};
+                  self.addLi('removeWidth','').onclick  = function(){obj.setWidth(obj.width - 50)};
+                  self.addLi('toss','').onclick = function() {self.listGraphObj.delete(obj)};
+
+                  break;
+
+                default:
+
+              }
             }
-            context.stroke();
-            }
-        this.markNext = function() {
-            var temp = self.listGraphObj.list;
-            self.graphObjMarked.setBorder('none');
-            console.log(temp.indexOf(self.graphObjMarked)+1%(temp.length-1));
-            self.graphObjMarked = temp[temp.indexOf(self.graphObjMarked)+1%(temp.length-1)];
-
-        }
-
-        this.draw = function() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            
-
-            self.createRows();
-            for (var i = 0; i < self.listGraphObj.list.length; i++) {
-                self.listGraphObj.list[i].draw();
-             
+            this.clear = function(){
+              self.content.innerHTML = "";
+              self.list = [];
             };
-        }
-        $(document).on("canvasChange", function(e){
-            self.draw();
 
-            });
+          }
+          function graphObj(type) {
+              var self = this;
+              this.type = type;
+              this.border = 'none';
+              this.angle = 1;
+              this.Emodule = 210000000000;
+              this.Imodule = 0.000000000001;
+              this.amount = 100;
 
-        }
+              switch (type) {
+                case 'force':
+                  this.img = arrow;
+                  this.height = 40;
+                  this.width = 40;
+                  this.prePoint = [{x:20,y:40}];
+                  break;
+                case 'beam':
+                  this.img = 'square';
+                  this.height = 15;
+                  this.width = 200;
+                  break;
+                case 'fixedsuport':
+                  this.img = 'square';
+                  this.height =100;
+                  this.width = 20;
+                  this.prePoint = [{x:20, y:50}];
+                case 'momentfreesuport':
+                  this.img = 'square';
+                  this.height = 20;
+                  this.width = 20;
+                  this.prePoint = {x:10,y:0};
+                case 'joint':
+                  this.img = 'circ';
+                  this.height = 20;
+                  this.width = 20;
+                  this.prePoint = [{x:0,y:10},{x:20,y:10}];
+                default:
+              }
 
-        var canvas = document.getElementById('myCanvas');
+
+              this.x = 0;
+              this.y = 0;
+
+              this.draw = function () {
+                  context.beginPath();
+                  switch (self.img) {
+                    case 'square':
+                      context.fillRect(self.x, self.y, self.width, self.height);
+                      break;
+                    case 'circ':
+                      context.arc(self.x, self.y, self.height, 0, 2 * Math.PI);
+                    default:
+                      context.drawImage(self.img, self.x, self.y, self.width, self.height);
+
+                  }
+
+                  if (self.border != 'none') {
+                      context.beginPath();
+                      context.strokeStyle = self.border;
+                      context.rect(self.x + 1, self.y + 1, self.width - 2, self.height - 2);
+                      context.stroke();
+                  }
+                  context.restore();
+                  updateFields();
+              };
 
 
-        function getMousePos(canvas, evt) {
-            var rect = canvas.getBoundingClientRect();
-            return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
+              this.isInside = function (x, y) {
+                  return x > self.x && x < (self.x + self.width) && y > self.y && y < (self.y + self.height);
+              };
+
+              this.moveTo = function (x, y) {
+
+                  self.x = Math.round(x / 10) * 10;
+                  self.y = Math.round(y / 10) * 10;
+                  $(document).trigger("canvasChange");
+
+
+              };
+              this.setWidth = function(width){
+                self.width = width;
+                $(document).trigger("canvasChange");
+
+              }
+              this.setBorder = function (style) {
+                  self.border = style;
+                  $(document).trigger("canvasChange");
+              };
+
+              this.intersect = function (obj) {
+                  minFirstX = self.x;
+                  maxFirstX = self.x + self.width;
+                  minFirstY = self.y;
+                  maxFirstY = self.y + self.height;
+
+                  minSecondX = obj.x;
+                  maxSecondX = obj.x + obj.width;
+                  minSecondy = obj.y;
+                  maxSecondy = obj.y + obj.width;
+
+                  if (maxFirstX < minSecondX) return false;
+                  if (minFirstX > maxSecondX) return false;
+                  if (maxFirstY < minSecondy) return false;
+                  if (minFirstY > maxSecondy) return false;
+                  return true; // boxes overlap
+              };
+          }
+
+          function listGraphObj() {
+              var self = this;
+              this.list = new Array();
+              this.add = function (graphObj) {
+                  self.list.push(graphObj);
+                  $(document).trigger("canvasChange");
+              };
+
+              this.delete = function (obj) {
+                  var index = self.list.indexOf(obj);
+                  self.list.splice(index, index+1);
+                  $(document).trigger("canvasChange");
+                  console.log(self.list);
+                  console.log(index);
+                  // Object.is(value1, value2);
+              };
+
+              this.findByCord = function (x, y) {
+                  for (var i = 0; i < self.list.length; i++) {
+                      if (self.list[i].isInside(x, y)) {
+                          return self.list[i];
+                      }
+                  };
+
+                  return false;
+              };
+
+              this.intersect = function (obj) {
+                  var tempList = [];
+                  for (var i = 0; i < self.list.length; i++) {
+                      if (!Object.is(self.list[i], obj) && self.list[i].intersect(obj)) {
+                          tempList.push(self.list[i]);
+                      }
+                  }
+                  ;
+                  if (tempList.length) {
+                      return tempList;
+                  }
+                  return false;
+              };
+
+          }
+
+          function canHandler(listo) {
+
+              var self = this;
+              this.ofx = 0;
+              this.ofy = 0;
+              this.listGraphObj = listo;
+              this.graphObj = false;
+              this.graphObjMarked = false;
+              this.menuHelper = new menuHelper(self.listGraphObj);
+              this.onClick = function (x, y) {
+                  self.graphObj = self.listGraphObj.findByCord(x, y);
+                  if (self.graphObj) {
+                      self.ofx = x - self.graphObj.x;
+                      self.ofy = y - self.graphObj.y;
+                  }
+              };
+              this.onMove = function (x, y) {
+                  if (self.graphObj) {
+                      self.graphObj.moveTo(x - self.ofx, y - self.ofy);
+                  }
+              };
+              this.onUpp = function () {
+                  self.graphObj = false;
+                  self.ofx = 0;
+                  self.ofy = 0;
+              };
+              this.onRightClick = function (x, y) {
+                  if (self.graphObjMarked) {
+                      self.graphObjMarked.setBorder('none');
+                  }
+                  self.graphObjMarked = self.listGraphObj.findByCord(x, y);
+                  if (self.graphObjMarked) {
+                      self.menuHelper.generateUl(self.graphObjMarked);
+                      $("#menu").toggle();
+                      $("#background").toggle();
+                      $('#menu').css({top: y-150, left: x-150});
+                      /*var liss  = document.getElementById("listm").getElementsByTagName("li");
+                      console.log(liss);
+                      for (var i = 0; i < liss.length; i++) {
+                          liss[i].style.transition = "left 1.0s ease-in-out";
+                          liss[i].style.left = 300 + 'px';
+                      };*/
+                  }
+                  updateFields();
+              };
+
+              this.createRows = function() {
+              context.beginPath();
+              context.strokeStyle = "#eee";
+              for (var i = 0; i < 1500; i = i + 10) {
+                  context.moveTo(0, i);
+                  context.lineTo(1500, i);
+                  context.moveTo(i, 0);
+                  context.lineTo(i, 1500);
+              }
+              context.stroke();
+              }
+          this.markNext = function() {
+              var temp = self.listGraphObj.list;
+              self.graphObjMarked.setBorder('none');
+              console.log(temp.indexOf(self.graphObjMarked)+1%(temp.length-1));
+              self.graphObjMarked = temp[temp.indexOf(self.graphObjMarked)+1%(temp.length-1)];
+
+          }
+
+          this.draw = function() {
+              context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+              self.createRows();
+              for (var i = 0; i < self.listGraphObj.list.length; i++) {
+                  self.listGraphObj.list[i].draw();
+
+              };
+          }
+          $(document).on("canvasChange", function(e){
+              self.draw();
+
+              });
+
+          }
+
+          var canvas = document.getElementById('myCanvas');
+
+
+          function getMousePos(canvas, evt) {
+              var rect = canvas.getBoundingClientRect();
+              return {
+                  x: evt.clientX - rect.left,
+                  y: evt.clientY - rect.top
+              };
+          }
+
+          // Set up our canvas on the page before doing anything.
+          // Get drawing context for the Canvas
+          var context = canvas.getContext('2d');
+
+          // Load up our image.
+          var arrow = new Image();
+          arrow.src = 'http://uxrepo.com/static/icon-sets/ionicons/svg/ios7-arrow-thin-down.svg';
+          arrow.width = '100';
+          arrow.height = '100';
+          var beam = new Image();
+          beam.src = 'http://en.academic.ru/pictures/enwiki/70/Fixed_support.svg';
+          beam.width = '1000';
+          beam.height = '500';
+          // Render our SVG image to the canvas once it loads.
+
+
+          function updateFields() {
+              if (canHan.graphObjMarked) {
+                  $('#xCord').val(canHan.graphObjMarked.x);
+                  $('#yCord').val(canHan.graphObjMarked.y);
+              } else {
+                  $('#xCord').val(0);
+                  $('#yCord').val(0);
+              }
+          }
+
+
+          var listob = new listGraphObj();
+          var canHan = new canHandler(listob);
+
+          $('#show').click(function () {
+              listob.add(new graphObj('joint'));
+
+          });
+          $('#beam').click(function () {
+              listob.add(new graphObj('beam'));
+          });
+
+          $('#arrow').click(function () {
+              listob.add(new graphObj('force'));
+          });
+
+          $('#uppdate').click(function () {
+              if (canHan.graphObjMarked) {
+                  canHan.graphObjMarked.moveTo($('#xCord').val(), $('#yCord').val());
+              }
+          });
+          window.onkeydown = function (evt) {
+              evt.preventDefault();
+              var tempObj = canHan.graphObjMarked;
+              if (tempObj) {
+
+                  switch (evt.keyIdentifier) {
+                      case 'Up':
+                          tempObj.moveTo(tempObj.x, tempObj.y - 10);
+                          break;
+                      case 'Down':
+                          tempObj.moveTo(tempObj.x, tempObj.y + 10);
+                          break;
+                      case 'Right':
+                          tempObj.moveTo(tempObj.x + 10, tempObj.y);
+                          break;
+                      case 'Left':
+                          tempObj.moveTo(tempObj.x - 10, tempObj.y);
+                          break;
+                      case 'U+0009':
+                          canHan.markNext();
+                      default :
+                          console.log('unknown key:' + evt.keyIdentifier);
+
+                  }
+                  var tempList = listob.intersect(tempObj);
+                  if (tempList) {
+                      for (var i = tempList.length - 1; i >= 0; i--) {
+                          tempList[i].draw();
+                      }
+                  }
+              }
             };
-        }
-
-        // Set up our canvas on the page before doing anything.  
-        // Get drawing context for the Canvas
-        var context = canvas.getContext('2d');
-
-        // Load up our image.
-        var arrow = new Image();
-        arrow.src = 'http://uxrepo.com/static/icon-sets/ionicons/svg/ios7-arrow-thin-down.svg';
-        arrow.width = '100';
-        arrow.height = '100';
-        var beam = new Image();
-        beam.src = 'http://en.academic.ru/pictures/enwiki/70/Fixed_support.svg';
-        beam.width = '1000';
-        beam.height = '500';
-        // Render our SVG image to the canvas once it loads.
-
-
-        function updateFields() {
-            if (canHan.graphObjMarked) {
-                $('#xCord').val(canHan.graphObjMarked.x);
-                $('#yCord').val(canHan.graphObjMarked.y);
-            } else {
-                $('#xCord').val(0);
-                $('#yCord').val(0);
+          $('#first_menu').click(function(){
+            var elements = document.querySelectorAll("#static_menu li:not(:first-child)");
+            for (var i = 0; i < elements.length; i++) {
+              console.log(elements);
+              console.log(elements[i].className);
             }
-        }
+          });
+          $('#background').click(function () {
+              $("#menu").toggle();
+              $("#background").toggle();
+              $('#menu').css({top: 200, left: 200});
+              canHan.graphObjMarked = false;
+          });
+          canvas.addEventListener("contextmenu", function (evt) {
+              evt.preventDefault();
+              var mousePos = getMousePos(canvas, evt);
+              canHan.onRightClick(mousePos.x, mousePos.y);
+
+          }, false);
+
+          canvas.addEventListener("mousedown", function (evt) {
+
+              var mousePos = getMousePos(canvas, evt);
+              canHan.onClick(mousePos.x, mousePos.y);
+          }, false);
+
+          canvas.addEventListener('mousemove', function (evt) {
+              var mousePos = getMousePos(canvas, evt);
+              canHan.onMove(mousePos.x, mousePos.y);
+          }, false);
+          canvas.addEventListener('mouseup', function (evt) {
+              canHan.onUpp();
+              //arr.moveTo(mousePos.x,mousePos.y);
+          }, false);
 
 
-        var listob = new listGraphObj();
-        var canHan = new canHandler(listob);
-
-        $('#beam').click(function () {
-            //listob.add(new graphObj('beam'));
-            listob.delete(canHan.graphObjMarked);
-        });
-
-        $('#arrow').click(function () {
-            listob.add(new graphObj('arrow'));
-        });
-
-        $('#uppdate').click(function () {
-
-            if (canHan.graphObjMarked) {
-                canHan.graphObjMarked.moveTo($('#xCord').val(), $('#yCord').val());
-            }
-
-        });
-        window.onkeydown = function (evt) {
-            evt.preventDefault();
-            var tempObj = canHan.graphObjMarked;
-            if (tempObj) {
-
-                switch (evt.keyIdentifier) {
-                    case 'Up':
-                        tempObj.moveTo(tempObj.x, tempObj.y - 10);
-                        break;
-                    case 'Down':
-                        tempObj.moveTo(tempObj.x, tempObj.y + 10);
-                        break;
-                    case 'Right':
-                        tempObj.moveTo(tempObj.x + 10, tempObj.y);
-                        break;
-                    case 'Left':
-                        tempObj.moveTo(tempObj.x - 10, tempObj.y);
-                        break;
-                    case 'U+0009':
-                        canHan.markNext();
-                    default :
-                        console.log('unknown key:' + evt.keyIdentifier);
-
-                }
-                var tempList = listob.intersect(tempObj);
-                if (tempList) {
-                    for (var i = tempList.length - 1; i >= 0; i--) {
-                        tempList[i].draw();
-                    }
-                }
-            }
-
-        };
-        canvas.addEventListener("contextmenu", function (evt) {
-            evt.preventDefault();
-            var mousePos = getMousePos(canvas, evt);
-            canHan.onRightClick(mousePos.x, mousePos.y);
-
-        }, false);
-
-        canvas.addEventListener("mousedown", function (evt) {
-
-            var mousePos = getMousePos(canvas, evt);
-            canHan.onClick(mousePos.x, mousePos.y);
-        }, false);
-
-        canvas.addEventListener('mousemove', function (evt) {
-            var mousePos = getMousePos(canvas, evt);
-            canHan.onMove(mousePos.x, mousePos.y);
-        }, false);
-        canvas.addEventListener('mouseup', function (evt) {
-            canHan.onUpp();
-            //arr.moveTo(mousePos.x,mousePos.y);
-        }, false);
+      })();
 
 
-    })();
-
-
-    //var testcon = canvas.getContext('2d');
-    //plotPoints(canvas,A, 10);
-    //plotLine(canvas,A);
-    // var context = canvas.getContext('2d');
-    // context.beginPath();
-    // context.moveTo(100, 150);
-    // context.lineTo(450, 50);
-    // context.stroke();
-</script>
-</body>
-</html>     
+      //var testcon = canvas.getContext('2d');
+      //plotPoints(canvas,A, 10);
+      //plotLine(canvas,A);
+      // var context = canvas.getContext('2d');
+      // context.beginPath();
+      // context.moveTo(100, 150);
+      // context.lineTo(450, 50);
+      // context.stroke();
+  </script>
+  </body>
+  </html>

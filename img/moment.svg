@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+ <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#baseEllipses"/>
+        
+
+        <path
+       style="fill:none;stroke:#000000"
+       id="path3340"
+       sodipodi:type="arc"
+       sodipodi:cx="338.57144"
+       sodipodi:cy="455.21936"
+       sodipodi:rx="155.71428"
+       sodipodi:ry="162.85715"
+       sodipodi:start="1.1558313"
+       sodipodi:end="5.5850536"
+       d="M 401.34889,604.25489 A 155.71428,162.85715 0 0 1 202.62358,534.63067 155.71428,162.85715 0 0 1 250.16815,321.15267 155.71428,162.85715 0 0 1 457.8555,350.5368"
+       sodipodi:open="true" />
+      </g>
+</svg>

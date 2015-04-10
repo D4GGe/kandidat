@@ -103,6 +103,7 @@
       this.EI = EI;
       this.ekv = [[EI,0,0,0],[xCord*EI,EI,0,0],[xCord*xCord/2*EI,xCord*EI,EI,0],[xCord*xCord*xCord/6*EI,xCord*xCord/2*EI,xCord*EI,EI]];
       switch (type){
+
         case "fixedSupport":
           this.vecEnd = [self.ekv[2] , self.ekv[3]];
           this.fEnd = [0, 0];
@@ -162,9 +163,9 @@
 
         
       };
-
       var ainv = numeric.inv(matrix);
       var ans = numeric.dot(ainv,fVec);
+      console.log(ans);
       return ans;
       
     }
@@ -188,7 +189,7 @@
      function test(){
 
         //var has = [new happening("momentFreeSupport",0,0,1),new happening("load",1,1,1), new happening("momentFreeSupport",2,0,1)];
-        var has = [new happening("momentFreeSupport",0,0,1),  new happening("load",1,1,1), new happening("momentFreeSupport",2,0,1),new happening("load",2.5,-1,1), new happening("momentFreeSupport",3,0,1),new happening("momentFreeSupport",4,0,1)];
+        var has = [new happening("momentFreeSupport",0,0,1),  new happening("load",1,4,1)];
 
           var defl = deflection(createMatrix(has),has,0.005);
           defl = numeric.mul(-1000,defl);
