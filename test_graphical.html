@@ -2,831 +2,1119 @@
 <html>
 
 <head>
-  <style>
-    body {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      margin: 0px;
-      padding: 0px;
-    }
+    <style>
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            margin: 0px;
+            padding: 0px;
+        }
 
-    button {
-      z-index: 40;
-    }
+        button {
+            z-index: 40;
+        }
 
-    #menu {
-      position: absolute;
-      left: 100px;
-      top: 15px;
-      z-index: 99;
-      width: 300px;
-      height: 300px;
-    }
+        #menu {
+            position: absolute;
+            left: 100px;
+            top: 15px;
+            z-index: 99;
+            width: 300px;
+            height: 300px;
+        }
 
-    #background {
-      position: absolute;
-      height: 100vw;
-      width: 100vw;
-      z-index: 10;
-      background-color: #555;
-      opacity: 0.6;
-    }
+        #background {
+            position: absolute;
+            height: 100vw;
+            width: 100vw;
+            z-index: 10;
+            background-color: #555;
+            opacity: 0.6;
+        }
 
-    ul {
-      padding: 0;
-      margin: 0;
-      width: 300px;
-      height: 300px;
-    }
+        ul {
+            padding: 0;
+            margin: 0;
+            width: 300px;
+            height: 300px;
+        }
 
-    #menu ul li {
-      list-style-type: none;
-      padding: 0px;
-      margin: 0px;
-      position: relative;
-      display: inline;
-      margin-left: -12px;
-    }
+        #menu ul li {
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+            position: relative;
+            display: inline;
+            margin-left: -12px;
+        }
 
-    #menu ul li:nth-child(1) {
-      top: 0px;
-      left: 150px;
-      margin-left: 0px !important;
-    }
+        #menu ul li:nth-child(1) {
+            top: 0px;
+            left: 150px;
+            margin-left: 0px !important;
+        }
 
-    #menu ul li:nth-child(2) {
-      top: 44px;
-      left: 256px;
-    }
+        #menu ul li:nth-child(2) {
+            top: 44px;
+            left: 256px;
+        }
 
-    #menu ul li:nth-child(3) {
-      top: 150px;
-      left: 300px;
-    }
+        #menu ul li:nth-child(3) {
+            top: 150px;
+            left: 300px;
+        }
 
-    #menu ul li:nth-child(4) {
-      top: 256px;
-      left: 256px;
-    }
+        #menu ul li:nth-child(4) {
+            top: 256px;
+            left: 256px;
+        }
 
-    #menu ul li:nth-child(5) {
-      top: 300px;
-      left: 150px;
-    }
+        #menu ul li:nth-child(5) {
+            top: 300px;
+            left: 150px;
+        }
 
-    #menu ul li:nth-child(6) {
-      top: 256px;
-      left: 44px;
-    }
+        #menu ul li:nth-child(6) {
+            top: 256px;
+            left: 44px;
+        }
 
-    #menu ul li:nth-child(7) {
-      top: 150px;
-      left: 0px;
-    }
+        #menu ul li:nth-child(7) {
+            top: 150px;
+            left: 0px;
+        }
 
-    #menu ul li:nth-child(8) {
-      top: 44px;
-      left: 44px;
-    }
+        #menu ul li:nth-child(8) {
+            top: 44px;
+            left: 44px;
+        }
 
-    #static_menu {
-      position: fixed;
-      top: 30px;
-      left: 30px;
-    }
+        #static_menu {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+        }
 
-    #static_menu li {
-      list-style-type: none;
-      border-style: solid;
-      border-width: 1px;
-      border-color: black;
-      height: 30px;
-      width: 30px;
-      float: left;
-    }
+        #static_menu li {
+            list-style-type: none;
+            border-style: solid;
+            border-width: 1px;
+            border-color: black;
+            height: 30px;
+            width: 30px;
+            float: left;
+        }
 
-    #static_menu li:not(:first-child) {
-      background-color: blue;
-      display: none;
-    }
-  </style>
+        #static_menu li:not(:first-child) {}
+
+        #beam {}
+
+        #momentfreesuport {
+            background: url(http://www.sitekconsulting.se/MomentFreeSupport.svg);
+            background-size: 30px 30px;
+        }
+
+        #fixedSupport {
+            background: url(http://www.sitekconsulting.se/img/img/FixedSupportRight.svg);
+            background-size: 50px 30px;
+        }
+
+        #load {
+            background: url(http://www.sitekconsulting.se/PointLoadNegative.svg);
+            background-size: 30px 30px;
+        }
+    </style>
 </head>
 
 <body>
-  <div id="static_menu">
-    <ul>
-      <li id="first_menu"></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
-  <div id="menu">
-    <ul id="listm">
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-    </ul>
-  </div>
-  <div id="background"></div>
-  <canvas id="myCanvas" width="1500" height="800" style="border-style: solid;
+    <div id="static_menu">
+        <ul>
+            <li id="beam"></li>
+            <li id="momentfreesuport"></li>
+            <li id="fixedSupport"></li>
+            <li id="load"></li>
+        </ul>
+    </div>
+    <div id="menu">
+        <ul id="listm">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+        </ul>
+    </div>
+    <div id="background"></div>
+    <canvas id="myCanvas" width="1500" height="800" style="border-style: solid;
       border-width: 5px;"></canvas>
-  <button type="button" id="show">hide/show</button>
-  <button type="button" id="beam">delete</button>
-  <button type="button" id="arrow">add arrow</button>
-  <input type="text" id="xCord">
-  <input type="text" id="yCord">
-  <button type="button" id="uppdate">update cordinates</button>
-  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-  <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
-  <script src="http://349.se/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://349.se/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+    <script src="http://349.se/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://349.se/css/bootstrap.min.css">
 
-  <script>
-    /*
-                           ------------------info------------------
-                            matrix operations and so on. http://numericjs.com/documentation.html
-                            basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
+    <script>
+        /*
+                                                   ------------------info------------------
+                                                    matrix operations and so on. http://numericjs.com/documentation.html
+                                                    basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
 
 
-                           the '/' in matlab or gauss elemenitation  is preformd like folows:
+                                                   the '/' in matlab or gauss elemenitation  is preformd like folows:
 
-                           * Solves this system:
-                           * x + y + z = 6
-                           * 2x + y + 2z = 10
-                           * x + 2y + 3z = 14
-                           A = [[1, 1, 1],
-                           [2, 1, 2],
-                           [1, 2, 3]];
+                                                   * Solves this system:
+                                                   * x + y + z = 6
+                                                   * 2x + y + 2z = 10
+                                                   * x + 2y + 3z = 14
+                                                   A = [[1, 1, 1],
+                                                   [2, 1, 2],
+                                                   [1, 2, 3]];
 
-                           x = [6, 10, 14];
-                           result = gauss($A, $x);
-                           */
+                                                   x = [6, 10, 14];
+                                                   result = gauss($A, $x);
+                                                   */
 
+        ///////////////////////////////////////////////////////////////////////////
+        var calc = calc || {};
+        (function(o) {
+            o.createMatrix = function(start, end, inc, func) {
+                var ans = [];
+                for (var i = start; i <= end; i = i + inc) {
+                    ans.push([i, func(i)]);
+                    // console.log(i);
+                };
+                return ans;
+            }
 
+            o.happening = function(type, xCord, load, EI) {
+                self = this;
+                this.M = load[0];
+                this.T = load[1];
+                this.xCord = xCord;
+                this.type = type;
+                this.length = length;
+                this.EI = EI;
+                this.ekv = [
+                    [EI, 0, 0, 0],
+                    [xCord * EI, EI, 0, 0],
+                    [xCord * xCord / 2 * EI, xCord * EI, EI, 0],
+                    [xCord * xCord * xCord / 6 * EI, xCord * xCord / 2 * EI, xCord * EI, EI]
+                ];
+                switch (type) {
+                    case "fixedSupport":
+                        this.vecEnd = [self.ekv[2], self.ekv[3]];
+                        this.fEnd = [0, 0];
+                        this.vecMid = null;
+                        this.fMid = null;
+                        break;
+                    case "momentFreeSupport":
+                        this.vecEnd = [self.ekv[1], self.ekv[3]];
+                        this.fEnd = [-this.M * this.EI, 0];
+                        //vec 3 - vec 4
+                        this.vecMid = [self.ekv[3].concat([0, 0, 0, 0]), ([0, 0, 0, 0]).concat(self.ekv[3]), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1]))];
+                        this.fMid = [0, 0, 0, -this.M * this.EI];
+                        break;
+                    case "load":
+                        this.vecEnd = [self.ekv[0], self.ekv[1]];
+                        this.fEnd = [-this.T * EI, -this.M * EI];
+                        this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
+                        this.fMid = [0, 0, -this.M * EI, -this.T * EI];
+                        break;
+                    case "moment":
+                        this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
+                        //this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
+                        this.fMid = [0, 0, -this.M * EI, -this.T * EI];
+                        this.vecEnd = [self.ekv[1], self.ekv[0]];
+                        this.fEnd = [-this.M * EI, -this.T * EI];
+                        break;
+                    case "joint":
+                        this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[0].concat(numeric.neg(self.ekv[0])), self.ekv[1].concat([0, 0, 0, 0]), ([0, 0, 0, 0]).concat(self.ekv[1])];
+                        this.fMid = [0, -this.T * EI, 0, 0];
+                        this.vecEnd = [self.ekv[1], self.ekv[0]];
+                        this.fEnd = [0, -this.T * EI];
+                        break;
+                    case "end":
+                        this.vecEnd = [self.ekv[1], self.ekv[0]];
+                        this.fEnd = [-this.M * EI, -this.T * EI];
+                        break;
+                    case "fixedRollSupport":
+                        this.vecEnd = [self.ekv[2], self.ekv[0]];
+                        this.fEnd = [0, -this.T * EI];
+                        break;
+                }
+            }
 
+            o.addZeroes = function(index, vec, len) {
+                var before = [];
+                var after = [];
+                for (var i = 0; i < 4 * (index - 1); i++) {
+                    before.push(0);
+                };
+                for (var i = 0; i < 4 * (len - index - 2); i++) {
+                    after.push(0);
+                };
+                return before.concat(vec.concat(after));
+            }
 
+            o.createMatrix = function(has) {
+                var len = has.length;
+                var matrix = [];
+                var fVec = [];
+                for (var i = 0; i < len; i++) {
+                    var hap = has[i];
+                    if (i == 0 || i == len - 1) {
+                        matrix.push(o.addZeroes(i, hap.vecEnd[0], len));
+                        fVec.push(hap.fEnd[0]);
+                        matrix.push(o.addZeroes(i, hap.vecEnd[1], len));
+                        fVec.push(hap.fEnd[1]);
+                    } else {
 
-
-    ////////////  helpers by Daniel ////////////////////////////////////
-    function plotLine(can, matrix) {
-      var context = can.getContext('2d');
-      context.beginPath();
-      context.moveTo(mathToWebCord(matrix[0], can.height)[0], mathToWebCord(matrix[0], can.height)[1]);
-      for (var i = 0; i <= matrix.length - 1; i++) {
-        context.lineTo(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1]);
-      };
-      context.stroke();
-    }
-
-    function plotPoints(can, matrix, size) {
-      var context = can.getContext('2d');
-      for (var i = 0; i <= matrix.length - 1; i++) {
-        context.beginPath();
-        context.arc(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1], size, 0, 2 * Math.PI, true);
-
-        context.fill();
-
-      };
-
-    }
-
-    function mathToWebCord(cord, ySize) {
-      var x = cord[0];
-      var y = cord[1];
-      return [x, ySize - y];
-    }
-
-    function webToMathCord(cord, ySize) {
-      x = cord[0];
-      y = cord[1];
-      return [x, y - ySize];
-
-    }
-
-    function createMatrix(start, end, inc, func) {
-      var ans = [];
-      for (var i = start; i <= end; i = i + inc) {
-        ans.push([i, func(i)]);
-        console.log(i);
-      };
-      return ans;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    (function() {
-
-
-      function happening(type, xCord, load, EI) {
-        self = this;
-        this.xCord = xCord;
-        this.type = type;
-        this.length = length;
-        this.EI = EI;
-        this.ekv = [
-          [EI, 0, 0, 0],
-          [xCord * EI, EI, 0, 0],
-          [xCord * xCord / 2 * EI, xCord * EI, EI, 0],
-          [xCord * xCord * xCord / 6 * EI, xCord * xCord / 2 * EI, xCord * EI, EI]
-        ];
-        switch (type) {
-          case "fixedSupport":
-            this.vecEnd = [self.ekv[2], self.ekv[3]];
-            this.fEnd = [0, 0];
-            this.vecMid = null;
-            this.fMid = null;
-
-            break;
-          case "momentFreeSupport":
-            this.vecEnd = [self.ekv[1], self.ekv[3]];
-            this.fEnd = [0, 0];
-            //vec 3 - vec 4
-            this.vecMid = [self.ekv[3].concat([0, 0, 0, 0]), ([0, 0, 0, 0]).concat(self.ekv[3]), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(self.ekv[1])];
-            this.fMid = [0, 0, 0, 0];
-            break;
-          case "load":
-            this.vecEnd = [self.ekv[0], self.ekv[1]];
-            this.fEnd = [-load * EI, 0];
-            this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
-            this.fMid = [0, 0, 0, -load * EI];
-            break;
-          case "moment":
-            this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
-            //this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
-            this.fMid = [0, 0, -load * EI, 0];
-            this.vecEnd = [self.ekv[1], self.ekv[0]];
-            this.fEnd = [-load * EI, 0];
-            break;
-          case "joint":
-            this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[0].concat(numeric.neg(self.ekv[0])), self.ekv[1].concat([0, 0, 0, 0]), ([0, 0, 0, 0]).concat(self.ekv[1])];
-            this.fMid = [0, 0, 0, 0];
-            this.vecEnd = [self.ekv[1], self.ekv[0]];
-            this.fEnd = [0, 0];
-            break;
-          case "end":
-            this.vecEnd = [self.ekv[1], self.ekv[0]];
-            this.fEnd = [0, 0];
-            break;
-        }
-      }
+                        matrix.push(o.addZeroes(i, hap.vecMid[0], len));
+                        fVec.push(hap.fMid[0]);
+                        matrix.push(o.addZeroes(i, hap.vecMid[1], len));
+                        fVec.push(hap.fMid[1]);
+                        matrix.push(o.addZeroes(i, hap.vecMid[2], len));
+                        fVec.push(hap.fMid[2]);
+                        matrix.push(o.addZeroes(i, hap.vecMid[3], len));
+                        fVec.push(hap.fMid[3]);
+                    };
 
 
-      function menuHelper(listGraphObj) {
-        self = this;
-        this.listGraphObj = listGraphObj;
-        this.content = document.getElementById('listm');
-        this.list = [];
-        this.addLi = function(type, content) {
-          var element = document.createElement("li");
-          element.style.padding = "5px";
+                };
 
-          switch (type) {
-            case 'toFofce':
-              element.style.background = "red";
-              element.onclick = function() {};
-              break;
-            case 'cordinates':
-              var t = document.createTextNode(content);
-              element.appendChild(t);
-            case 'rotate':
-              var t = document.createTextNode('rotate');
-              element.appendChild(t);
-            case 'addWidth':
-              var t = document.createTextNode('+');
-              element.appendChild(t);
-              break;
-            case 'removeWidth':
-              var t = document.createTextNode('-');
-              element.appendChild(t);
-            case 'toss':
-              var t = document.createTextNode('toss');
-              element.appendChild(t);
-            default:
+                var ainv = numeric.inv(matrix);
+                var ans = numeric.dot(ainv, fVec);
+                return ans;
 
-          }
-          self.content.appendChild(element);
-          return element;
-        };
-        this.generateUl = function(obj) {
-          self.clear();
-          switch (obj.type) {
-            case 'force':
-              self.addLi('cordinates', 'x:' + canHan.graphObjMarked.x + ', y: ' + canHan.graphObjMarked.x);
-              var rotate = self.addLi('rotate');
-              rotate.onclick = function() {
-                obj.angle = -1;
-                $(document).trigger("canvasChange");
-                console.log('det fungerar!');
-              };
-              break;
-            case 'beam':
-              self.addLi('cordinates', 'x:' + canHan.graphObjMarked.x + ', y: ' + canHan.graphObjMarked.x).onclick = function() {
-                var tempx = prompt("enter new x cordinates", "");
-                var tempy = prompt("enter new y cordinates", "");
-                obj.moveTo(tempx, tempy);
-              };
-              var rotate = self.addLi('rotate', '');
-              rotate.onclick = function() {
-                obj.angle = obj.angle * -1;
-                $(document).trigger("canvasChange");
-                console.log('det fungerar!');
-              };
-              self.addLi('addWidth', '').onclick = function() {
-                obj.setWidth(obj.width + 50)
-              };
-              self.addLi('removeWidth', '').onclick = function() {
-                obj.setWidth(obj.width - 50)
-              };
-              self.addLi('toss', '').onclick = function() {
-                self.listGraphObj.delete(obj)
-              };
+            }
 
-              break;
+            o.deflection = function(k, func_has, h) {
+                w = [];
+                T = [];
+                M = [];
+                //console.log(k);
+                for (var i = 0; i < func_has.length - 1; i++) {
+                    constVec = [k[4 * i], k[4 * i + 1], k[4 * i + 2], k[4 * i + 3]];
 
-            default:
 
-          }
-        }
-        this.clear = function() {
-          self.content.innerHTML = "";
-          self.list = [];
-        };
+                    var EI = func_has[i].EI;
 
-      }
+                    var count = 0;
+                    for (var x = func_has[i].xCord; x < func_has[i + 1].xCord; x = x + h) {
+                        count++;
+                        var wEkv = [EI * x * x * x / 6, EI * x * x / 2, EI * x, EI];
+                        var TEkv = [-x, -1, 0, 0];
+                        var MEkv = [-1, 0, 0, 0];
+                        w.push(numeric.dot(wEkv, constVec));
+                        M.push(numeric.dot(TEkv, constVec));
+                        T.push(numeric.dot(MEkv, constVec));
+                    };
+                };
+                return [w, M, T];
+            }
 
-      function graphObj(type) {
-        this.x = 0;
-        this.y = 0;
-        var self = this;
-        this.type = type;
-        this.border = 'none';
-        this.angle = 1;
-        this.Emodule = 210000000000;
-        this.Imodule = 0.000000000001;
-        this.amount = 100;
-        switch (type) {
-          case 'force':
-            this.img = arrow;
-            this.height = 40;
-            this.width = 40;
-            this.prePoint = [{
-              x: 20,
-              y: 40
-            }];
-            break;
-          case 'beam':
-            this.img = 'square';
-            this.height = 15;
-            this.width = 200;
-            break;
-          case 'fixedsuport':
-            this.img =fixedsuportIMG;
-            this.height = 100;
-            this.width = 100;
-            this.prePoint = [{
-              x: 20,
-              y: 50
-            }];
-            break;
-          case 'momentfreesuport':
-            this.img = 'square';
-            this.height = 20;
-            this.width = 20;
-            this.prePoint = {
-              x: 10,
-              y: 0
-            };
-            break;
-          case 'joint':
-            this.img = 'circ';
-            this.height = 20;
-            this.width = 20;
-            this.prePoint = [{
-              x: 0,
-              y: 10
-            }, {
-              x: 20,
-              y: 10
-            }];
-            break;
-          default:
-        }
+            o.sortHappenings = function(allHappenings) {
+                allHappenings.sort(function(a, b) {
+                    return a.xCord - b.xCord;
+                });
+                for (var i = 0; i < allHappenings.length - 2; i++) {
+                    if (allHappenings[i].xCord == allHappenings[i + 1].xCord) {
+                        if (allHappenings[i].type == "momentFreeSupport" && allHappenings[i + 1].type == "moment") {
+                            allHappenings[i].M = allHappenings[i + 1].M;
+                            allHappenings.splice(i + 1, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "moment" && allHappenings[i + 1].type == "momentFreeSupport") {
+                            allHappenings[i + 1].M = allHappenings[i].M;
+                            allHappenings.splice(i, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "joint" && allHappenings[i + 1].type == "load") {
+                            allHappenings[i].T = allHappenings[i + 1].T;
+                            allHappenings.splice(i + 1, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "load" && allHappenings[i + 1].type == "joint") {
+                            allHappenings[i + 1].T = allHappenings[i].T;
+                            allHappenings.splice(i, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "fixedRollSupport" && allHappenings[i + 1].type == "load") {
+                            allHappenings[i].T = allHappenings[i + 1].T;
+                            allHappenings.splice(i + 1, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "load" && allHappenings[i + 1].type == "fixedRollSupport") {
+                            allHappenings[i + 1].T = allHappenings[i].T;
+                            allHappenings.splice(i, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "moment" && allHappenings[i + 1].type == "load") {
+                            allHappenings[i].T = allHappenings[i + 1].T;
+                            allHappenings.splice(i + 1, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        } else if (allHappenings[i].type == "load" && allHappenings[i + 1].type == "moment") {
+                            allHappenings[i].M = allHappenings[i + 1].M;
+                            allHappenings.splice(i + 1, 1);
+                            allHappenings[i] = new o.happening(allHappenings[i].type, allHappenings[i].xCord, [allHappenings[i].M, allHappenings[i].T], allHappenings[i].EI);
+                        }
+                    }
+                }
+                return allHappenings;
+            }
 
-        this.draw = function() {
-          context.beginPath();
-          console.log(self.img);
-          console.log('x:' + self.x + ' y:' + self.y+ 'width: '+self.width+ ' height' + self.height);
-          switch (self.img) {
-            case 'square':
-              context.fillRect(self.x, self.y, self.width, self.height);
-              break;
-            case 'circ':
-              context.arc(self.x, self.y, self.height, 0, 2 * Math.PI);
-            default:
-              context.drawImage(self.img, self.x, self.y, self.width, self.height);
+            o.test = function() {
 
-          }
 
-          if (self.border != 'none') {
+                // var has = [new o.happening("end",0,0,1), new o.happening("moment",0.5,-1,1), new o.happening("momentFreeSupport",1,0,1), new o.happening("joint",2,0,1), new o.happening("momentFreeSupport",3,0,1), new o.happening("end",4,0,1)];
+                //var has = [new o.happening("fixedSupport",0,0,1),  new o.happening("load",1,1,1), new o.happening("momentFreeSupport",2,0,1), new o.happening("load",2.2,0,1), new o.happening("momentFreeSupport",2.5,0,1), new o.happening("momentFreeSupport",3,0,1), new o.happening("load",4,1,1), new o.happening("momentFreeSupport",4.1,0,1), new o.happening("load",4.3,-5,1), new o.happening("momentFreeSupport",4.5,0,1), new o.happening("fixedSupport",5,0,1)];
+                var has = [new o.happening("fixedSupport", 0, [0, 0], 1), new o.happening("momentFreeSupport", 1, [0, 0], 1), new o.happening("fixedRollSupport", 3, [0, 0], 1), new o.happening("load", 1.5, [0, -10], 1), new o.happening(
+                    "load", 0.5, [0,
+                        5
+                    ], 1), new o.happening("moment", 1, [-2, 0], 1), new o.happening("load", 2.5, [0, -4], 1), new o.happening("moment", 2, [-5, 0], 1), new o.happening("load", 2.9, [0, -5], 1)];
+                has = o.sortHappenings(has);
+                // console.log(has);
+
+                var values = o.deflection(o.createMatrix(has), has, 0.005);
+                console.log(values);
+                var defl = values[0]
+                defl = numeric.mul(100, defl);
+                defl = numeric.add(250, defl);
+
+                var canvas = document.getElementById('myCanvas');
+                var context = canvas.getContext('2d');
+                context.beginPath();
+                context.moveTo(0, defl[0]);
+                for (var i = 1; i <= defl.length - 1; i++) {
+                    context.lineTo(i, defl[i]);
+                };
+                context.stroke();
+                context.beginPath();
+                context.strokeStyle = "red";
+                context.moveTo(0, 250);
+                context.lineTo(1000, 250);
+                context.stroke();
+                context.beginPath;
+                context.fillStyle = "blue";
+                context.fillRect(200, 250, 4, 4);
+                context.fillRect(400, 250, 4, 4);
+                context.fillRect(600, 250, 4, 4);
+
+
+            }
+        })(calc);
+
+
+
+        ////////////  helpers by Daniel ////////////////////////////////////
+        function plotLine(can, matrix) {
+            var context = can.getContext('2d');
             context.beginPath();
-            context.strokeStyle = self.border;
-            context.rect(self.x + 1, self.y + 1, self.width - 2, self.height - 2);
+            context.moveTo(mathToWebCord(matrix[0], can.height)[0], mathToWebCord(matrix[0], can.height)[1]);
+            for (var i = 0; i <= matrix.length - 1; i++) {
+                context.lineTo(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1]);
+            };
             context.stroke();
-          }
-          context.restore();
-          updateFields();
-        };
-
-
-        this.isInside = function(x, y) {
-          return x > self.x && x < (self.x + self.width) && y > self.y && y < (self.y + self.height);
-        };
-
-        this.moveTo = function(x, y) {
-
-          self.x = Math.round(x / 10) * 10;
-          self.y = Math.round(y / 10) * 10;
-          $(document).trigger("canvasChange");
-
-
-        };
-        this.setWidth = function(width) {
-          self.width = width;
-          $(document).trigger("canvasChange");
-
         }
-        this.setBorder = function(style) {
-          self.border = style;
-          $(document).trigger("canvasChange");
-        };
 
-        this.intersect = function(obj) {
-          minFirstX = self.x;
-          maxFirstX = self.x + self.width;
-          minFirstY = self.y;
-          maxFirstY = self.y + self.height;
+        function plotPoints(can, matrix, size) {
+            var context = can.getContext('2d');
+            for (var i = 0; i <= matrix.length - 1; i++) {
+                context.beginPath();
+                context.arc(mathToWebCord(matrix[i], can.height)[0], mathToWebCord(matrix[i], can.height)[1], size, 0, 2 * Math.PI, true);
 
-          minSecondX = obj.x;
-          maxSecondX = obj.x + obj.width;
-          minSecondy = obj.y;
-          maxSecondy = obj.y + obj.width;
+                context.fill();
 
-          if (maxFirstX < minSecondX) return false;
-          if (minFirstX > maxSecondX) return false;
-          if (maxFirstY < minSecondy) return false;
-          if (minFirstY > maxSecondy) return false;
-          return true; // boxes overlap
-        };
-      }
-
-      function listGraphObj() {
-        var self = this;
-        this.list = new Array();
-        this.add = function(graphObj) {
-          self.list.push(graphObj);
-          $(document).trigger("canvasChange");
-        };
-
-        this.delete = function(obj) {
-          var index = self.list.indexOf(obj);
-          self.list.splice(index, index + 1);
-          $(document).trigger("canvasChange");
-          console.log(self.list);
-          console.log(index);
-          // Object.is(value1, value2);
-        };
-
-        this.findByCord = function(x, y) {
-          for (var i = 0; i < self.list.length; i++) {
-            if (self.list[i].isInside(x, y)) {
-              return self.list[i];
-            }
-          };
-
-          return false;
-        };
-
-        this.findBeam = function() {
-          var temp = [];
-          for (var i = 0; i < self.list.length; i++) {
-            if (self.list[i].type == 'beam') {
-              temp.push(self.list[i]);
-            }
-
-          }
-          return temp;
-        };
-        this.lengthBetwen = function(graphObj, tempBeam) {
-          console.log(tempBeam);
-          var x = graphObj.x;
-          var y = graphObj.y;
-          var bXMin = tempBeam.x;
-          var bXMax = tempBeam.x + tempBeam.width;
-          var bY = tempBeam.y;
-          if (x < bXMin) {
-            var bx = bXMin;
-          } else if (x > bXMax) {
-            var bx = bXMax;
-          } else {
-            var bx = x;
-          }
-          return Math.sqrt(Math.pow(x - bx, 2) + Math.pow(bY - y, 2));
-        };
-        this.moveClose = function(graphObj, beam) {
-
-        };
-
-        this.findClosestBeam = function(graphObj) {
-          var temp = 99999999;
-          var tempBeam = null;
-          var beams = self.findBeam();
-          //console.log(self.lengthBetwen(graphObj, beam));
-          for (var i = 0; i < beams.length; i++) {
-            if (self.lengthBetwen(graphObj, beams[i]) < temp) {
-              temp = self.lengthBetwen(graphObj, beams[i]);
-              tempBeam = beams[i];
-
-            }
-          }
-          console.log(temp);
-          return temp;
+            };
 
         }
 
-
-        this.fixCanvas = function() {
-          console.log('den är igång')
-          for (var i = 0; i < self.list.length; i++) {
-            if (self.list[i].type != 'beam')
-              self.findClosestBeam(self.list[i]);
-          }
+        function mathToWebCord(cord, ySize) {
+            var x = cord[0];
+            var y = cord[1];
+            return [x, ySize - y];
         }
 
-        this.intersect = function(obj) {
-          var tempList = [];
-          for (var i = 0; i < self.list.length; i++) {
-            if (!Object.is(self.list[i], obj) && self.list[i].intersect(obj)) {
-              tempList.push(self.list[i]);
+        function webToMathCord(cord, ySize) {
+            x = cord[0];
+            y = cord[1];
+            return [x, y - ySize];
+
+        }
+
+        function createMatrix(start, end, inc, func) {
+            var ans = [];
+            for (var i = start; i <= end; i = i + inc) {
+                ans.push([i, func(i)]);
+                //console.log(i);
+            };
+            return ans;
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////
+
+
+        (function() {
+
+
+            function happening(type, xCord, load, EI) {
+                self = this;
+                this.xCord = xCord;
+                this.type = type;
+                this.length = length;
+                this.EI = EI;
+                this.ekv = [
+                    [EI, 0, 0, 0],
+                    [xCord * EI, EI, 0, 0],
+                    [xCord * xCord / 2 * EI, xCord * EI, EI, 0],
+                    [xCord * xCord * xCord / 6 * EI, xCord * xCord / 2 * EI, xCord * EI, EI]
+                ];
+                switch (type) {
+                    case "fixedSupport":
+                        this.vecEnd = [self.ekv[2], self.ekv[3]];
+                        this.fEnd = [0, 0];
+                        this.vecMid = null;
+                        this.fMid = null;
+
+                        break;
+                    case "momentFreeSupport":
+                        this.vecEnd = [self.ekv[1], self.ekv[3]];
+                        this.fEnd = [0, 0];
+                        //vec 3 - vec 4
+                        this.vecMid = [self.ekv[3].concat([0, 0, 0, 0]), ([0, 0, 0, 0]).concat(self.ekv[3]), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(self.ekv[1])];
+                        this.fMid = [0, 0, 0, 0];
+                        break;
+                    case "load":
+                        this.vecEnd = [self.ekv[0], self.ekv[1]];
+                        this.fEnd = [-load * EI, 0];
+                        this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
+                        this.fMid = [0, 0, 0, -load * EI];
+                        break;
+                    case "moment":
+                        this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
+                        //this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[2].concat(numeric.neg(self.ekv[2])), self.ekv[1].concat(numeric.neg(self.ekv[1])), self.ekv[0].concat(numeric.neg(self.ekv[0]))];
+                        this.fMid = [0, 0, -load * EI, 0];
+                        this.vecEnd = [self.ekv[1], self.ekv[0]];
+                        this.fEnd = [-load * EI, 0];
+                        break;
+                    case "joint":
+                        this.vecMid = [self.ekv[3].concat(numeric.neg(self.ekv[3])), self.ekv[0].concat(numeric.neg(self.ekv[0])), self.ekv[1].concat([0, 0, 0, 0]), ([0, 0, 0, 0]).concat(self.ekv[1])];
+                        this.fMid = [0, 0, 0, 0];
+                        this.vecEnd = [self.ekv[1], self.ekv[0]];
+                        this.fEnd = [0, 0];
+                        break;
+                    case "end":
+                        this.vecEnd = [self.ekv[1], self.ekv[0]];
+                        this.fEnd = [0, 0];
+                        break;
+                }
             }
-          };
 
-          if (tempList.length) {
-            return tempList;
-          }
-          return false;
-        };
 
-      }
+            function menuHelper(listGraphObj) {
+                self = this;
+                this.listGraphObj = listGraphObj;
+                this.content = document.getElementById('listm');
+                this.list = [];
+                this.addLi = function(type, content) {
+                    var element = document.createElement("li");
+                    element.style.padding = "5px";
 
-      function canHandler(listo) {
+                    switch (type) {
+                        case 'toFofce':
+                            element.style.background = "red";
+                            element.onclick = function() {};
+                            break;
+                        case 'cordinates':
+                            var t = document.createTextNode(content);
+                            element.appendChild(t);
+                        case 'rotate':
+                            var t = document.createTextNode('rotate');
+                            element.appendChild(t);
+                        case 'addWidth':
+                            var t = document.createTextNode('+');
+                            element.appendChild(t);
+                            break;
+                        case 'removeWidth':
+                            var t = document.createTextNode('-');
+                            element.appendChild(t);
+                        case 'toss':
+                            var t = document.createTextNode('toss');
+                            element.appendChild(t);
+                        default:
 
-        var self = this;
-        this.ofx = 0;
-        this.ofy = 0;
-        this.listGraphObj = listo;
-        this.graphObj = false;
-        this.graphObjMarked = false;
-        this.menuHelper = new menuHelper(self.listGraphObj);
-        this.onClick = function(x, y) {
-          self.graphObj = self.listGraphObj.findByCord(x, y);
-          if (self.graphObj) {
-            self.ofx = x - self.graphObj.x;
-            self.ofy = y - self.graphObj.y;
-          }
-        };
-        this.calculate = function() {
+                    }
+                    self.content.appendChild(element);
+                    return element;
+                };
+                this.generateUl = function(obj) {
+                    self.clear();
+                    switch (obj.type) {
+                        case 'force':
+                            self.addLi('cordinates', 'x:' + canHan.graphObjMarked.x + ', y: ' + canHan.graphObjMarked.x);
+                            var rotate = self.addLi('rotate');
+                            rotate.onclick = function() {
+                                obj.angle = -1;
+                                $(document).trigger("canvasChange");
+                                console.log('det fungerar!');
+                            };
+                            break;
+                        case 'beam':
+                            self.addLi('cordinates', 'x:' + canHan.graphObjMarked.x + ', y: ' + canHan.graphObjMarked.x).onclick = function() {
+                                var tempx = prompt("enter new x cordinates", "");
+                                var tempy = prompt("enter new y cordinates", "");
+                                obj.moveTo(tempx, tempy);
+                            };
+                            var rotate = self.addLi('rotate', '');
+                            rotate.onclick = function() {
+                                obj.angle = obj.angle * -1;
+                                $(document).trigger("canvasChange");
+                                console.log('det fungerar!');
+                            };
+                            self.addLi('addWidth', '').onclick = function() {
+                                obj.setWidth(obj.width + 50)
+                            };
+                            self.addLi('removeWidth', '').onclick = function() {
+                                obj.setWidth(obj.width - 50)
+                            };
+                            self.addLi('toss', '').onclick = function() {
+                                self.listGraphObj.delete(obj)
+                            };
 
-        };
-        this.onMove = function(x, y) {
-          if (self.graphObj) {
-            self.graphObj.moveTo(x - self.ofx, y - self.ofy);
-          }
-        };
-        this.onUpp = function() {
-          self.graphObj = false;
-          self.ofx = 0;
-          self.ofy = 0;
-          self.calculate();
-          //self.listGraphObj.fixCanvas();
+                            break;
 
-        };
+                        default:
 
-        this.onRightClick = function(x, y) {
-          if (self.graphObjMarked) {
-            self.graphObjMarked.setBorder('none');
-          }
-          self.graphObjMarked = self.listGraphObj.findByCord(x, y);
-          if (self.graphObjMarked) {
-            self.menuHelper.generateUl(self.graphObjMarked);
-            $("#menu").toggle();
-            $("#background").toggle();
-            $('#menu').css({
-              top: y - 150,
-              left: x - 150
+                    }
+                }
+                this.clear = function() {
+                    self.content.innerHTML = "";
+                    self.list = [];
+                };
+
+            }
+
+            function graphObj(type) {
+                this.x = 0;
+                this.y = 0;
+                var self = this;
+                this.type = type;
+                this.border = 'none';
+                this.angle = 1;
+                this.Emodule = 210000000000;
+                this.Imodule = 0.000000000001;
+                this.amount = 100;
+                switch (type) {
+                    case 'load':
+                        this.img = arrow;
+                        this.height = 40;
+                        this.width = 40;
+                        this.prePoint = [{
+                            x: 20,
+                            y: 40
+                        }];
+                        break;
+                    case 'beam':
+                        this.img = 'square';
+                        this.height = 15;
+                        this.width = 200;
+                        break;
+                    case 'fixedSupport':
+                        this.img = fixedsuportIMG;
+                        this.height = 100;
+                        this.width = 100;
+                        this.prePoint = [{
+                            x: 20,
+                            y: 50
+                        }];
+                        break;
+                    case 'momentFreeSupport':
+                        this.img = momentfreesuport;
+                        this.height = 30;
+                        this.width = 40;
+                        this.prePoint = {
+                            x: 10,
+                            y: 0
+                        };
+                        break;
+                    case 'joint':
+                        this.img = 'circ';
+                        this.height = 20;
+                        this.width = 20;
+                        this.prePoint = [{
+                            x: 0,
+                            y: 10
+                        }, {
+                            x: 20,
+                            y: 10
+                        }];
+                        break;
+                    default:
+                }
+
+                this.draw = function() {
+                    context.beginPath();
+
+                    switch (self.img) {
+                        case 'square':
+                            context.fillRect(self.x, self.y, self.width, self.height);
+                            break;
+                        case 'circ':
+                            context.arc(self.x, self.y, self.height, 0, 2 * Math.PI);
+                        default:
+                            context.drawImage(self.img, self.x, self.y, self.width, self.height);
+
+                    }
+
+                    if (self.border != 'none') {
+                        context.beginPath();
+                        context.strokeStyle = self.border;
+                        context.rect(self.x + 1, self.y + 1, self.width - 2, self.height - 2);
+                        context.stroke();
+                    }
+                    context.restore();
+                    updateFields();
+                };
+
+
+                this.isInside = function(x, y) {
+                    return x > self.x && x < (self.x + self.width) && y > self.y && y < (self.y + self.height);
+                };
+
+                this.moveTo = function(x, y) {
+
+                    self.x = Math.round(x / 10) * 10;
+                    self.y = Math.round(y / 10) * 10;
+                    $(document).trigger("canvasChange");
+
+
+                };
+                this.setWidth = function(width) {
+                    self.width = width;
+                    $(document).trigger("canvasChange");
+
+                }
+                this.setBorder = function(style) {
+                    self.border = style;
+                    $(document).trigger("canvasChange");
+                };
+
+                this.intersect = function(obj) {
+                    minFirstX = self.x;
+                    maxFirstX = self.x + self.width;
+                    minFirstY = self.y;
+                    maxFirstY = self.y + self.height;
+
+                    minSecondX = obj.x;
+                    maxSecondX = obj.x + obj.width;
+                    minSecondy = obj.y;
+                    maxSecondy = obj.y + obj.width;
+
+                    if (maxFirstX < minSecondX) return false;
+                    if (minFirstX > maxSecondX) return false;
+                    if (maxFirstY < minSecondy) return false;
+                    if (minFirstY > maxSecondy) return false;
+                    return true; // boxes overlap
+                };
+            }
+
+            function listGraphObj() {
+                var self = this;
+                this.list = new Array();
+                this.add = function(graphObj) {
+                    self.list.push(graphObj);
+                    $(document).trigger("canvasChange");
+                };
+
+                this.delete = function(obj) {
+                    var index = self.list.indexOf(obj);
+                    self.list.splice(index, index + 1);
+                    $(document).trigger("canvasChange");
+                    console.log(self.list);
+                    console.log(index);
+                    // Object.is(value1, value2);
+                };
+
+                this.findByCord = function(x, y) {
+                    for (var i = 0; i < self.list.length; i++) {
+                        if (self.list[i].isInside(x, y)) {
+                            return self.list[i];
+                        }
+                    };
+
+                    return false;
+                };
+
+                this.findBeam = function() {
+                    var temp = [];
+                    for (var i = 0; i < self.list.length; i++) {
+                        if (self.list[i].type == 'beam') {
+                            temp.push(self.list[i]);
+                        }
+
+                    }
+                    return temp;
+                };
+                this.lengthBetwen = function(graphObj, tempBeam) {
+                    console.log(tempBeam);
+                    var x = graphObj.x;
+                    var y = graphObj.y;
+                    var bXMin = tempBeam.x;
+                    var bXMax = tempBeam.x + tempBeam.width;
+                    var bY = tempBeam.y;
+                    if (x < bXMin) {
+                        var bx = bXMin;
+                    } else if (x > bXMax) {
+                        var bx = bXMax;
+                    } else {
+                        var bx = x;
+                    }
+                    return Math.sqrt(Math.pow(x - bx, 2) + Math.pow(bY - y, 2));
+                };
+                this.moveClose = function(graphObj, beam) {
+
+                };
+
+                this.findClosestBeam = function(graphObj) {
+                    var temp = 99999999;
+                    var tempBeam = null;
+                    var beams = self.findBeam();
+                    //console.log(self.lengthBetwen(graphObj, beam));
+                    for (var i = 0; i < beams.length; i++) {
+                        if (self.lengthBetwen(graphObj, beams[i]) < temp) {
+                            temp = self.lengthBetwen(graphObj, beams[i]);
+                            tempBeam = beams[i];
+
+                        }
+                    }
+                    console.log(temp);
+                    return temp;
+
+                }
+
+
+                this.fixCanvas = function() {
+                    console.log('den är igång')
+                    for (var i = 0; i < self.list.length; i++) {
+                        if (self.list[i].type != 'beam')
+                            self.findClosestBeam(self.list[i]);
+                    }
+                }
+
+                this.intersect = function(obj) {
+                    var tempList = [];
+                    for (var i = 0; i < self.list.length; i++) {
+                        if (!Object.is(self.list[i], obj) && self.list[i].intersect(obj)) {
+                            tempList.push(self.list[i]);
+                        }
+                    };
+
+                    if (tempList.length) {
+                        return tempList;
+                    }
+                    return false;
+                };
+
+            }
+
+            function canHandler(listo) {
+
+                var self = this;
+                this.ofx = 0;
+                this.ofy = 0;
+                this.listGraphObj = listo;
+                this.graphObj = false;
+                this.graphObjMarked = false;
+                this.menuHelper = new menuHelper(self.listGraphObj);
+                this.onClick = function(x, y) {
+                    self.graphObj = self.listGraphObj.findByCord(x, y);
+                    if (self.graphObj) {
+                        self.ofx = x - self.graphObj.x;
+                        self.ofy = y - self.graphObj.y;
+                    }
+                };
+                this.calculate = function() {
+                    // typ, xCord, [moment, kraft] EI
+                    var zoom = 0.001;
+                    var has = [];
+                    var tempBeams = self.listGraphObj.findBeam();
+                    if (tempBeams.length > 0) {
+                        console.log(self.listGraphObj.list[0]);
+                        for (var num = 0; num < self.listGraphObj.list.length; num++) {
+                            var tempGraph = self.listGraphObj.list[num];
+                            console.log(num);
+                            if (tempGraph.type != 'beam') {
+                                console.log(tempGraph.type);
+                                switch (tempGraph.type) {
+                                    case "load":
+                                        has.push(new calc.happening(tempGraph.type, tempGraph.x * zoom, [0, tempGraph.amount], 1));
+                                        break;
+                                    case "moment":
+                                        has.push(new calc.happening(tempGraph.type, tempGraph.x * zoom, [tempGraph.amount, 0], 1));
+                                        break;
+                                    default:
+                                        has.push(new calc.happening(tempGraph.type, tempGraph.x * zoom, [0, 0], 1));
+                                }
+                            }
+                        }
+                        has.push(new calc.happening('end', 0, [0, 0], 1));
+                        //var has = [new calc.happening("fixedSupport", 0, [0, 0], 1), new calc.happening("momentFreeSupport", 1, [0, 0], 1), new calc.happening("fixedRollSupport", 3, [0, 0], 1), new calc.happening("load", 1.5, [0, -10], 1), new calc.happening("load", 0.5, [0,5], 1), new calc.happening("moment", 1, [-2, 0], 1), new calc.happening("load", 2.5, [0, -4], 1), new calc.happening("moment", 2, [-5, 0], 1), new calc.happening("load", 2.9, [0, -5], 1)];
+                        has = calc.sortHappenings(has);
+
+
+                        var values = calc.deflection(calc.createMatrix(has), has, 0.001);
+
+                        var defl = values[0]
+                        defl = numeric.mul(10000, defl);
+                        self.listGraphObj
+                        defl = numeric.add(tempBeams[0].y + 15, defl);
+
+                        var canvas = document.getElementById('myCanvas');
+                        var context = canvas.getContext('2d');
+                        context.strokeStyle = "#f00";
+                        context.beginPath();
+                        var xTempCord = tempBeams[0].x;
+                        context.moveTo(xTempCord, defl[0]);
+
+                        for (var i = 1; i <= defl.length - 1; i++) {
+                            xTempCord++;
+                            context.lineTo(xTempCord, defl[i]);
+                        };
+                        context.stroke();
+                    }
+
+                };
+                this.onMove = function(x, y) {
+                    if (self.graphObj) {
+                        self.graphObj.moveTo(x - self.ofx, y - self.ofy);
+                    }
+                };
+                this.onUpp = function() {
+                    self.graphObj = false;
+                    self.ofx = 0;
+                    self.ofy = 0;
+                    //console.log('afsfaa');
+                    //self.calculate();
+                    //self.listGraphObj.fixCanvas();
+
+                };
+
+                this.onRightClick = function(x, y) {
+                    if (self.graphObjMarked) {
+                        self.graphObjMarked.setBorder('none');
+                    }
+                    self.graphObjMarked = self.listGraphObj.findByCord(x, y);
+                    if (self.graphObjMarked) {
+                        self.menuHelper.generateUl(self.graphObjMarked);
+                        $("#menu").toggle();
+                        $("#background").toggle();
+                        $('#menu').css({
+                            top: y - 150,
+                            left: x - 150
+                        });
+                        /*var liss  = document.getElementById("listm").getElementsByTagName("li");
+                        console.log(liss);
+                        for (var i = 0; i < liss.length; i++) {
+                            liss[i].style.transition = "left 1.0s ease-in-out";
+                            liss[i].style.left = 300 + 'px';
+                        };*/
+                    }
+                    updateFields();
+                };
+
+                this.createRows = function() {
+                    context.beginPath();
+                    context.strokeStyle = "#eee";
+                    for (var i = 0; i < 1500; i = i + 10) {
+                        context.moveTo(0, i);
+                        context.lineTo(1500, i);
+                        context.moveTo(i, 0);
+                        context.lineTo(i, 1500);
+                    }
+                    context.stroke();
+                }
+                this.markNext = function() {
+                    var temp = self.listGraphObj.list;
+                    self.graphObjMarked.setBorder('none');
+                    //
+                    //
+                    //
+                    // console.log(temp.indexOf(self.graphObjMarked) + 1 % (temp.length - 1));
+                    self.graphObjMarked = temp[temp.indexOf(self.graphObjMarked) + 1 % (temp.length - 1)];
+
+                }
+
+                this.draw = function() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+                    self.createRows();
+                    for (var i = 0; i < self.listGraphObj.list.length; i++) {
+                        self.listGraphObj.list[i].draw();
+
+                    };
+                }
+                $(document).on("canvasChange", function(e) {
+                    self.draw();
+                    //  console.log(self.listGraphObj);
+
+                });
+
+            }
+
+            var canvas = document.getElementById('myCanvas');
+
+
+            function getMousePos(canvas, evt) {
+                var rect = canvas.getBoundingClientRect();
+                return {
+                    x: evt.clientX - rect.left,
+                    y: evt.clientY - rect.top
+                };
+            }
+
+            // Set up our canvas on the page before doing anything.
+            // Get drawing context for the Canvas
+            var context = canvas.getContext('2d');
+
+            // Load up our image.
+            var arrow = new Image();
+            arrow.src = 'http://uxrepo.com/static/icon-sets/ionicons/svg/ios7-arrow-thin-down.svg';
+            arrow.width = '100';
+            arrow.height = '100';
+            var beam = new Image();
+            beam.src = 'http://en.academic.ru/pictures/enwiki/70/Fixed_support.svg';
+            beam.width = '1000';
+            beam.height = '500';
+            // Render our SVG image to the canvas once it loads.
+            var fixedsuportIMG = new Image();
+            fixedsuportIMG.src = 'http://www.sitekconsulting.se/img/img/FixedSupportRight.svg';
+            fixedsuportIMG.width = '200';
+            fixedsuportIMG.height = '100';
+
+            var momentfreesuport = new Image();
+            momentfreesuport.src = 'http://www.sitekconsulting.se/MomentFreeSupport.svg';
+            momentfreesuport.width = '100';
+            momentfreesuport.height = '100';
+
+            function updateFields() {
+                if (canHan.graphObjMarked) {
+                    $('#xCord').val(canHan.graphObjMarked.x);
+                    $('#yCord').val(canHan.graphObjMarked.y);
+                } else {
+                    $('#xCord').val(0);
+                    $('#yCord').val(0);
+                }
+            }
+
+
+            var listob = new listGraphObj();
+            var canHan = new canHandler(listob);
+
+            $('#fixedSupport').click(function() {
+                listob.add(new graphObj('fixedSupport'));
+
             });
-            /*var liss  = document.getElementById("listm").getElementsByTagName("li");
-            console.log(liss);
-            for (var i = 0; i < liss.length; i++) {
-                liss[i].style.transition = "left 1.0s ease-in-out";
-                liss[i].style.left = 300 + 'px';
-            };*/
-          }
-          updateFields();
-        };
+            $('#beam').click(function() {
+                listob.add(new graphObj('beam'));
+            });
+            $('#momentfreesuport').click(function() {
+                listob.add(new graphObj('momentFreeSupport'));
+            });
 
-        this.createRows = function() {
-          context.beginPath();
-          context.strokeStyle = "#eee";
-          for (var i = 0; i < 1500; i = i + 10) {
-            context.moveTo(0, i);
-            context.lineTo(1500, i);
-            context.moveTo(i, 0);
-            context.lineTo(i, 1500);
-          }
-          context.stroke();
-        }
-        this.markNext = function() {
-          var temp = self.listGraphObj.list;
-          self.graphObjMarked.setBorder('none');
-          console.log(temp.indexOf(self.graphObjMarked) + 1 % (temp.length - 1));
-          self.graphObjMarked = temp[temp.indexOf(self.graphObjMarked) + 1 % (temp.length - 1)];
+            $('#load').click(function() {
+                listob.add(new graphObj('load'));
+            });
 
-        }
+            $('#uppdate').click(function() {
+                if (canHan.graphObjMarked) {
+                    canHan.graphObjMarked.moveTo($('#xCord').val(), $('#yCord').val());
+                }
+            });
+            window.onkeydown = function(evt) {
+                evt.preventDefault();
+                var tempObj = canHan.graphObjMarked;
+                if (tempObj) {
 
-        this.draw = function() {
-          context.clearRect(0, 0, canvas.width, canvas.height);
+                    switch (evt.keyIdentifier) {
+                        case 'Up':
+                            tempObj.moveTo(tempObj.x, tempObj.y - 10);
+                            break;
+                        case 'Down':
+                            tempObj.moveTo(tempObj.x, tempObj.y + 10);
+                            break;
+                        case 'Right':
+                            tempObj.moveTo(tempObj.x + 10, tempObj.y);
+                            break;
+                        case 'Left':
+                            tempObj.moveTo(tempObj.x - 10, tempObj.y);
+                            break;
+                        case 'U+0009':
+                            canHan.markNext();
+                        default:
+                            console.log('unknown key:' + evt.keyIdentifier);
 
+                    }
+                    var tempList = listob.intersect(tempObj);
+                    if (tempList) {
+                        for (var i = tempList.length - 1; i >= 0; i--) {
+                            tempList[i].draw();
+                        }
+                    }
+                }
+            };
+            $('#first_menu').click(function() {
+                var elements = document.querySelectorAll("#static_menu li:not(:first-child)");
+                for (var i = 0; i < elements.length; i++) {
+                    // console.log(elements);
+                    //console.log(elements[i].className);
+                }
+            });
+            $('#background').click(function() {
+                $("#menu").toggle();
+                $("#background").toggle();
+                $('#menu').css({
+                    top: 200,
+                    left: 200
+                });
+                canHan.graphObjMarked = false;
+            });
+            canvas.addEventListener("contextmenu", function(evt) {
+                evt.preventDefault();
+                var mousePos = getMousePos(canvas, evt);
+                canHan.onRightClick(mousePos.x, mousePos.y);
 
-          self.createRows();
-          for (var i = 0; i < self.listGraphObj.list.length; i++) {
-            self.listGraphObj.list[i].draw();
+            }, false);
 
-          };
-        }
-        $(document).on("canvasChange", function(e) {
-          self.draw();
-          //  console.log(self.listGraphObj);
+            canvas.addEventListener("mousedown", function(evt) {
 
-        });
+                var mousePos = getMousePos(canvas, evt);
+                canHan.onClick(mousePos.x, mousePos.y);
+            }, false);
 
-      }
-
-      var canvas = document.getElementById('myCanvas');
-
-
-      function getMousePos(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
-        return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-        };
-      }
-
-      // Set up our canvas on the page before doing anything.
-      // Get drawing context for the Canvas
-      var context = canvas.getContext('2d');
-
-      // Load up our image.
-      var arrow = new Image();
-      arrow.src = 'http://uxrepo.com/static/icon-sets/ionicons/svg/ios7-arrow-thin-down.svg';
-      arrow.width = '100';
-      arrow.height = '100';
-      var beam = new Image();
-      beam.src = 'http://en.academic.ru/pictures/enwiki/70/Fixed_support.svg';
-      beam.width = '1000';
-      beam.height = '500';
-      // Render our SVG image to the canvas once it loads.
-      var fixedsuportIMG = new Image();
-      fixedsuportIMG.src = 'http://www.sitekconsulting.se/img/img/FixedSupportRight.svg';
-      fixedsuportIMG.width = '200';
-      fixedsuportIMG.height = '100';
-
-
-      function updateFields() {
-        if (canHan.graphObjMarked) {
-          $('#xCord').val(canHan.graphObjMarked.x);
-          $('#yCord').val(canHan.graphObjMarked.y);
-        } else {
-          $('#xCord').val(0);
-          $('#yCord').val(0);
-        }
-      }
+            canvas.addEventListener('mousemove', function(evt) {
+                var mousePos = getMousePos(canvas, evt);
+                canHan.onMove(mousePos.x, mousePos.y);
+            }, false);
+            canvas.addEventListener('mouseup', function(evt) {
+                canHan.onUpp();
+                //arr.moveTo(mousePos.x,mousePos.y);
+            }, false);
 
 
-      var listob = new listGraphObj();
-      var canHan = new canHandler(listob);
-
-      $('#show').click(function() {
-        listob.add(new graphObj('fixedsuport'));
-
-      });
-      $('#beam').click(function() {
-        listob.add(new graphObj('beam'));
-      });
-
-      $('#arrow').click(function() {
-        listob.add(new graphObj('force'));
-      });
-
-      $('#uppdate').click(function() {
-        if (canHan.graphObjMarked) {
-          canHan.graphObjMarked.moveTo($('#xCord').val(), $('#yCord').val());
-        }
-      });
-      window.onkeydown = function(evt) {
-        evt.preventDefault();
-        var tempObj = canHan.graphObjMarked;
-        if (tempObj) {
-
-          switch (evt.keyIdentifier) {
-            case 'Up':
-              tempObj.moveTo(tempObj.x, tempObj.y - 10);
-              break;
-            case 'Down':
-              tempObj.moveTo(tempObj.x, tempObj.y + 10);
-              break;
-            case 'Right':
-              tempObj.moveTo(tempObj.x + 10, tempObj.y);
-              break;
-            case 'Left':
-              tempObj.moveTo(tempObj.x - 10, tempObj.y);
-              break;
-            case 'U+0009':
-              canHan.markNext();
-            default:
-              console.log('unknown key:' + evt.keyIdentifier);
-
-          }
-          var tempList = listob.intersect(tempObj);
-          if (tempList) {
-            for (var i = tempList.length - 1; i >= 0; i--) {
-              tempList[i].draw();
-            }
-          }
-        }
-      };
-      $('#first_menu').click(function() {
-        var elements = document.querySelectorAll("#static_menu li:not(:first-child)");
-        for (var i = 0; i < elements.length; i++) {
-          console.log(elements);
-          console.log(elements[i].className);
-        }
-      });
-      $('#background').click(function() {
-        $("#menu").toggle();
-        $("#background").toggle();
-        $('#menu').css({
-          top: 200,
-          left: 200
-        });
-        canHan.graphObjMarked = false;
-      });
-      canvas.addEventListener("contextmenu", function(evt) {
-        evt.preventDefault();
-        var mousePos = getMousePos(canvas, evt);
-        canHan.onRightClick(mousePos.x, mousePos.y);
-
-      }, false);
-
-      canvas.addEventListener("mousedown", function(evt) {
-
-        var mousePos = getMousePos(canvas, evt);
-        canHan.onClick(mousePos.x, mousePos.y);
-      }, false);
-
-      canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(canvas, evt);
-        canHan.onMove(mousePos.x, mousePos.y);
-      }, false);
-      canvas.addEventListener('mouseup', function(evt) {
-        canHan.onUpp();
-        //arr.moveTo(mousePos.x,mousePos.y);
-      }, false);
+        })();
 
 
-    })();
-
-
-    //var testcon = canvas.getContext('2d');
-    //plotPoints(canvas,A, 10);
-    //plotLine(canvas,A);
-    // var context = canvas.getContext('2d');
-    // context.beginPath();
-    // context.moveTo(100, 150);
-    // context.lineTo(450, 50);
-    // context.stroke();
-  </script>
+        //var testcon = canvas.getContext('2d');
+        //plotPoints(canvas,A, 10);
+        //plotLine(canvas,A);
+        // var context = canvas.getContext('2d');
+        // context.beginPath();
+        // context.moveTo(100, 150);
+        // context.lineTo(450, 50);
+        // context.stroke();
+    </script>
 </body>
 
 </html>
