@@ -248,7 +248,7 @@
                         this.fEnd = [0, -this.T * EI];
                         break;
                 }
-            }
+            };
 
             o.addZeroes = function(index, vec, len) {
                 var before = [];
@@ -260,7 +260,7 @@
                     after.push(0);
                 };
                 return before.concat(vec.concat(after));
-            }
+            };
 
             o.createMatrix = function(has) {
                 var len = has.length;
@@ -268,6 +268,7 @@
                 var fVec = [];
                 for (var i = 0; i < len; i++) {
                     var hap = has[i];
+                    console.log(hap);
                     if (i == 0 || i == len - 1) {
                         matrix.push(o.addZeroes(i, hap.vecEnd[0], len));
                         fVec.push(hap.fEnd[0]);
@@ -292,15 +293,15 @@
                 var ans = numeric.dot(ainv, fVec);
                 return ans;
 
-            }
+            };
 
             o.deflection = function(k, func_has, h) {
-                w = [];
-                T = [];
-                M = [];
+               var w = [];
+               var T = [];
+               var M = [];
                 //console.log(k);
                 for (var i = 0; i < func_has.length - 1; i++) {
-                    constVec = [k[4 * i], k[4 * i + 1], k[4 * i + 2], k[4 * i + 3]];
+                   var constVec = [k[4 * i], k[4 * i + 1], k[4 * i + 2], k[4 * i + 3]];
 
 
                     var EI = func_has[i].EI;
@@ -861,7 +862,8 @@
                         has.push(new calc.happening('end', 0, [0, 0], 1));
                         //var has = [new calc.happening("fixedSupport", 0, [0, 0], 1), new calc.happening("momentFreeSupport", 1, [0, 0], 1), new calc.happening("fixedRollSupport", 3, [0, 0], 1), new calc.happening("load", 1.5, [0, -10], 1), new calc.happening("load", 0.5, [0,5], 1), new calc.happening("moment", 1, [-2, 0], 1), new calc.happening("load", 2.5, [0, -4], 1), new calc.happening("moment", 2, [-5, 0], 1), new calc.happening("load", 2.9, [0, -5], 1)];
                         has = calc.sortHappenings(has);
-
+                        console.log("calculation sorted");
+                        console.log(has);
 
                         var values = calc.deflection(calc.createMatrix(has), has, 0.001);
 
@@ -895,7 +897,7 @@
                     self.ofx = 0;
                     self.ofy = 0;
                     //console.log('afsfaa');
-                    //self.calculate();
+                    self.calculate();
                     //self.listGraphObj.fixCanvas();
 
                 };

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+
+
+
+<html>
+
+<head>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="1000" height="1000" style="border-style: solid;
+
+    border-width: 5px;"></canvas>
+
+    <script src="http://349.se/gauss.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+        <script>
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            ctx.font = "30px Comic Sans MS";
+            function Test(type, EI,P){
+                self = this;
+                this.type = type;
+                this.EI = EI;
+                this.P = P;
+                this.checkbroken = function(l) {
+                   switch (type) {
+                       case 1:
+                           console.log((Math.PI*Math.PI)*this.EI/(4*l*l));
+                           
+                           return this.P>=(Math.PI*Math.PI)*this.EI/(4*l*l);
+                           break;
+                        case 2:
+                            return this.P>=(Math.PI*Math.PI)*this.EI/(l*l);
+                            break;
+                        case 3:
+                            return this.P>=2.05*(Math.PI*Math.PI)*this.EI/(l*l);    
+                           break;
+                        case 4:
+                            return this.p>=4*(Math.PI*Math.PI)*this.EI/(l*l);    
+                           break;
+                        case 5:
+                            return this.p>=4*(Math.PI*Math.PI)*this.EI/(l*l);    
+                           break;
+                   }       
+                };
+                
+            }
+			function Euler() {
+                self = this;
+                this.l = 1;
+                this.tests = [];
+                this.paint = function(){
+                    console.log(this.tests);
+                    for (var i = 0; i < this.tests.length; i++) {
+                        var test = this.tests[i];
+                        
+                        if (test.checkbroken(this.l)) {
+                            ctx.fillStyle = "red";           
+                        }else{
+                            ctx.fillStyle = "green";
+                        }
+                        ctx.fillText(test.type ,test.EI*100,1000-test.P); 
+                        
+                    }
+                    
+                };
+                this.addTest = function(type, EI,P){
+                  this.tests.push(new Test(type, EI,P));  
+                  
+                };
+                
+            }
+            
+            var eu = new Euler();
+            eu.addTest(2,2,20);
+            eu.paint();
+			
+		</script>
+</body>
+</html>
