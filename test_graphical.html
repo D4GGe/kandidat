@@ -39,8 +39,8 @@
         ul {
             padding: 0;
             margin: 0;
-            width: 300px;
-            height: 300px;
+            width: 900px;
+            height: 100px;
         }
 
         #menu ul li {
@@ -50,6 +50,7 @@
             position: relative;
             display: inline;
             margin-left: -12px;
+            background-repeat: no-repeat;
         }
 
         #menu ul li:nth-child(1) {
@@ -108,6 +109,10 @@
             width: 30px;
             float: left;
         }
+        
+         #static_menu_left {
+             margin-left: 600px !important;
+         }
 
         #static_menu li:not(:first-child) {}
 
@@ -127,6 +132,18 @@
             background: url(http://www.sitekconsulting.se/PointLoadNegative.svg);
             background-size: 30px 30px;
         }
+        
+         #diLoad {
+            background: url('http://349.se/kandidat/img/DistributedLoadPositive.svg');
+            background-size: 30px 30px;
+        }
+        
+        #joint {
+            background: url('http://349.se/kandidat/img/Joint.svg');
+            background-size: 30px 30px;
+        }
+        
+        
     </style>
 </head>
 
@@ -137,18 +154,26 @@
             <li id="momentfreesuport"></li>
             <li id="fixedSupport"></li>
             <li id="load"></li>
+            <li id="diLoad"></li>
+            <li id="joint"></li>
+            <li id="static_menu_left"></li>
+            <li id="powerFactor"></li>
+            <li id="toss"></li>
+            
+                
         </ul>
+    
     </div>
     <div id="menu">
         <ul id="listm">
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
         </ul>
     </div>
     <div id="background"></div>
@@ -471,6 +496,7 @@
                     [xCord * xCord / 2 * EI, xCord * EI, EI, 0],
                     [xCord * xCord * xCord / 6 * EI, xCord * xCord / 2 * EI, xCord * EI, EI]
                 ];
+                
                 switch (type) {
                     case "fixedSupport":
                         this.vecEnd = [self.ekv[2], self.ekv[3]];
@@ -520,19 +546,22 @@
                 this.list = [];
                 this.addLi = function(type, content) {
                     var element = document.createElement("li");
-                    element.style.padding = "5px";
+                    element.style.padding = "18px 18px";
+                 //16 heigt 12 width
 
                     switch (type) {
                         case 'toFofce':
-                            element.style.background = "red";
+                            //element.style.background = "red";
                             element.onclick = function() {};
                             break;
                         case 'cordinates':
                             var t = document.createTextNode(content);
                             element.appendChild(t);
+                            break;
                         case 'rotate':
                             var t = document.createTextNode('rotate');
                             element.appendChild(t);
+                            break;
                         case 'addWidth':
                             var t = document.createTextNode('+');
                             element.appendChild(t);
@@ -540,10 +569,26 @@
                         case 'removeWidth':
                             var t = document.createTextNode('-');
                             element.appendChild(t);
-                        case 'toss':
-                            var t = document.createTextNode('toss');
+                            break;
+                         case 'changeLoad':
+                            var t = document.createTextNode(content);
                             element.appendChild(t);
+                        case 'toss':
+                           //element.style.background = "red";
+                           element.style.backgroundImage = "url('http://349.se/kandidat/img/TrashCan.svg')";
+                           element.style.backgroundSize="100% 100%";
+                              break;
+                         case 'changeLength':
+                           element.style.backgroundImage = "url('http://349.se/kandidat/img/ChangeLengthOfBeam.svg')";
+                           element.style.backgroundSize="100% 100%";
+                            break;
+                          case 'changeTvarsnitt':
+                           element.style.backgroundImage = "url('http://349.se/kandidat/img/ChangeTvarsnitt.svg')";
+                           element.style.backgroundSize="100% 100%";
+                            
+                              break;
                         default:
+                        console.log('error:unown menu type '+type);
 
                     }
                     self.content.appendChild(element);
@@ -551,36 +596,37 @@
                 };
                 this.generateUl = function(obj) {
                     self.clear();
+                    //"fixedSupport" "momentFreeSupport" "load" "moment" "joint"
                     switch (obj.type) {
-                        case 'force':
-                            self.addLi('cordinates', 'x:' + canHan.graphObjMarked.x + ', y: ' + canHan.graphObjMarked.x);
-                            var rotate = self.addLi('rotate');
-                            rotate.onclick = function() {
-                                obj.angle = -1;
-                                $(document).trigger("canvasChange");
-                                console.log('det fungerar!');
+                        case 'load':
+                             self.addLi('toss', '').onclick = function() {
+                                self.listGraphObj.delete(obj);
                             };
-                            break;
-                        case 'beam':
-                            self.addLi('cordinates', 'x:' + canHan.graphObjMarked.x + ', y: ' + canHan.graphObjMarked.x).onclick = function() {
+                            self.addLi('cordinates', '[' + canHan.graphObjMarked.x*0.001 + ',' + canHan.graphObjMarked.x*0.001 + ']').onclick = function() {
                                 var tempx = prompt("enter new x cordinates", "");
                                 var tempy = prompt("enter new y cordinates", "");
                                 obj.moveTo(tempx, tempy);
                             };
-                            var rotate = self.addLi('rotate', '');
-                            rotate.onclick = function() {
-                                obj.angle = obj.angle * -1;
-                                $(document).trigger("canvasChange");
-                                console.log('det fungerar!');
+                            break;
+                        case 'beam':
+                           self.addLi('cordinates', '[' + canHan.graphObjMarked.x*0.001 + ',' + canHan.graphObjMarked.x*0.001 + ']').onclick = function() {
+                                var tempx = prompt("enter new x cordinates", "");
+                                var tempy = prompt("enter new y cordinates", "");
+                                obj.moveTo(tempx, tempy);
                             };
-                            self.addLi('addWidth', '').onclick = function() {
-                                obj.setWidth(obj.width + 50)
+                           
+                            self.addLi('changeLength', '').onclick = function() {
+                                var temp = prompt("enter new with", "100");
+                                obj.setWidth(temp);
                             };
-                            self.addLi('removeWidth', '').onclick = function() {
-                                obj.setWidth(obj.width - 50)
+                            
+                            self.addLi('changeTvarsnitt', '').onclick = function() {
+                                var temp = prompt("enter new with", "100");
+                                obj.setWidth(temp);
                             };
+                            
                             self.addLi('toss', '').onclick = function() {
-                                self.listGraphObj.delete(obj)
+                                self.listGraphObj.delete(obj);
                             };
 
                             break;
@@ -897,7 +943,7 @@
                     self.ofx = 0;
                     self.ofy = 0;
                     //console.log('afsfaa');
-                    self.calculate();
+                   // self.calculate();
                     //self.listGraphObj.fixCanvas();
 
                 };
