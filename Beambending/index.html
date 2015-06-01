@@ -1,0 +1,427 @@
+<!DOCTYPE HTML>
+<html>
+    
+    <head>
+        <style>
+            body {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                margin: 0px;
+                padding: 0px;
+            }
+    
+            button {
+                z-index: 40;
+            }
+    
+            #menu {
+                position: absolute;
+                left: 100px;
+                top: 15px;
+                z-index: 99;
+                width: 300px;
+                height: 300px;
+                 display: none;
+            }
+    
+            #background {
+                position: absolute;
+                height: 100vw;
+                width: 100vw;
+                z-index: 10;
+                background-color: #fff;
+                opacity: 0.60;
+                 display: none;
+            }
+    
+            ul {
+                padding: 0;
+                margin: 0;
+                width: 900px;
+                height: 100px;
+            }
+    
+            #menu ul li {
+                list-style-type: none;
+                padding: 4px;
+                margin: 240px 0px 0px 80px;
+                position: relative;
+                display: inline;
+                margin-left: 2px;
+                background-repeat: no-repeat;
+                border-style: solid;
+                border-width: 3px;
+                border-color: #555;
+                 border-radius: 10px;
+            }
+    
+           /* #menu ul li:nth-child(1) {
+                top: 66px;
+                left: 150px;
+                margin-left: 0px !important;
+            }
+    
+            #menu ul li:nth-child(2) {
+                top: 44px;
+                left: 256px;
+            }
+    
+            #menu ul li:nth-child(3) {
+                top: 150px;
+                left: 300px;
+            }
+    
+            #menu ul li:nth-child(4) {
+                top: 256px;
+                left: 256px;
+            }
+    
+            #menu ul li:nth-child(5) {
+                top: 300px;
+                left: 150px;
+            }
+    
+            #menu ul li:nth-child(6) {
+                top: 256px;
+                left: 44px;
+            }
+    
+            #menu ul li:nth-child(7) {
+                top: 150px;
+                left: 0px;
+            }
+    
+            #menu ul li:nth-child(8) {
+                top: 44px;
+                left: 44px;
+            }
+    */
+            #static_menu {
+                position: fixed;
+                top: 30px;
+                left: 30px;
+                
+            }
+    
+            #static_menu li {
+                list-style-type: none;
+                border-style: solid;
+                border-width: 1px;
+                border-color: black;
+                height: 30px;
+                width: 30px;
+                float: left;
+            }
+    
+             #static_menu_left {
+                 margin-left: 500px !important;
+             }
+    
+            #static_menu li:not(:first-child) {}
+    
+            #beam {}
+    
+            #momentfreesuport {
+                background: url(http://www.sitekconsulting.se/MomentFreeSupport.svg);
+                background-size: 30px 30px;
+            }
+    
+            #fixedSupport {
+                background: url(http://www.sitekconsulting.se/img/img/FixedSupportRight.svg);
+                background-size: 50px 30px;
+            }
+    
+            #load {
+                background: url(http://www.sitekconsulting.se/PointLoadNegative.svg);
+                background-size: 30px 30px;
+            }
+    
+             #diLoad {
+                background: url('http://349.se/kandidat/img/DistributedLoadPositiveConst.svg');
+                background-size: 30px 30px;
+            }
+    
+            #joint {
+                background: url('http://349.se/kandidat/img/Joint.svg');
+                background-size: 30px 30px;
+            }
+            #toss {
+                 background: url('http://349.se/kandidat/img/TrashCan.svg');
+                background-size: 30px 30px;
+    
+            }
+    
+             #static_menu_left {
+                 background: url('http://349.se/kandidat/img/ShowDiagrams.svg');
+                background-size: 30px 30px;
+    
+            }
+    
+            #FixedRollSupport{
+    
+                 background: url('http://349.se/kandidat/img/FixedRollSupportRight.svg');
+                background-size: 30px 30px;
+    
+    
+            }
+            #moment{
+
+             background: url( 'http://349.se/kandidat/img/MomentPositive.svg');
+            background-size: 30px 30px;
+
+        }
+            #sliderContainer{
+                margin: -60px 0px 0px 680px;
+                display: none;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="static_menu">
+            <ul>
+                <li id="beam">Balk</li>
+                <li id="momentfreesuport"></li>
+                <li id="fixedSupport"></li>
+                <li id="FixedRollSupport"></li>
+                <li id="joint"></li>
+                <li id="load"></li>
+                <li id="moment"></li>
+                <li id="diLoad"></li>
+                <li id="static_menu_left"></li>
+                <li id="powerFactor">1:4</li>
+                <li id="sfMode">SF</li>
+                <li id="toss"></li>
+            </ul>
+            <div id="sliderContainer">
+                <input type="text" class="slider" value="" data-slider-min="1" data-slider-max="50000" data-slider-step="10" data-slider-value="10000"
+                data-slider-orientation="horizontal" data-slider-selection="after">
+            </div>
+        </div>
+        <div id="menu">
+            <ul id="listm">
+               
+            </ul>
+        </div>
+        <div id="background"></div>
+        <canvas id="myCanvas" width="1000" height="800" style="border-style: solid;
+      border-width: 5px;"></canvas>
+        <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+        <script src="http://349.se/js/bootstrap.min.js"></script>
+        <script src="http://349.se/kandidat/dep_knack/js/bootstrap-slider.js"></script>
+        <script src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+        <script src="calculations.js"></script>
+        <script src="menuHelper.js"></script>
+        <script src="graphObject.js"></script>
+        <script src="listGraphObj.js"></script>
+        <script src="canHandler.js"></script>
+        <script src="loadImages.js"></script>
+        <link href="http://349.se/kandidat/dep_knack/css/slider.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://349.se/css/bootstrap.min.css">
+        <script>
+            /*
+                                                       ------------------info------------------
+                                                        matrix operations and so on. http://numericjs.com/documentation.html
+                                                        basic math http://www.w3schools.com/jsref/jsref_obj_math.asp
+    
+    
+                                                       the '/' in matlab or gauss elemenitation  is preformd like folows:
+    
+                                                       * Solves this system:
+                                                       * x + y + z = 6
+                                                       * 2x + y + 2z = 10
+                                                       * x + 2y + 3z = 14
+                                                       A = [[1, 1, 1],
+                                                       [2, 1, 2],
+                                                       [1, 2, 3]];
+    
+                                                       x = [6, 10, 14];
+                                                       result = gauss($A, $x);
+                                                       */
+    
+            ///////////////////////////////////////////////////////////////////////////
+           
+    
+            ////////////  helpers by Daniel ////////////////////////////////////
+           
+    
+    
+            ///////////////////////////////////////////////////////////////////////////
+    
+    
+            
+    //FixedRollSupport_SF.svg MomentFreeSupport_SF.svg FixedSupport_SF.svg
+              
+              
+    
+                var canvas = document.getElementById('myCanvas');
+    
+    
+                function getMousePos(canvas, evt) {
+                    var rect = canvas.getBoundingClientRect();
+                    return {
+                        x: evt.clientX - rect.left,
+                        y: evt.clientY - rect.top
+                    };
+                }
+    
+                // Set up our canvas on the page before doing anything.
+                // Get drawing context for the Canvas
+                var context = canvas.getContext('2d');
+    
+                var listob = new listGraphObj();
+                var canHan = new canHandler(listob);
+                setTimeout(function(){
+    
+                    var temp = new graphObj('fixedSupport');
+                    listob.add(temp);
+                    temp.moveTo(700,300);
+                    var temp = new graphObj('beam');
+                    listob.add(temp);
+                    temp.moveTo(500,300);
+                    var temp = new graphObj('momentFreeSupport');
+                    listob.add(temp);
+                    temp.moveTo(500,350);
+                    var temp = new graphObj('load');
+                    listob.add(temp);
+                    temp.moveTo(550,250);
+                    }, 1000);
+                  $('.slider').slider()
+                    .on('slide', function(ev){
+                     canHan.deflScale=ev.value;
+                     canHan.onUpp();
+                                     
+                    });
+                var sfMode = false;
+                 $('#sfMode').click(function() {
+                   sfMode = !sfMode;
+                  canHan.draw();
+                })
+                $('#fixedSupport').click(function() {
+                    listob.add(new graphObj('fixedSupport'));
+    
+                });
+                  $('#static_menu_left').click(function() {
+                    canHan.drawGraph = !canHan.drawGraph;
+                    canHan.onUpp();
+    
+                });
+                $('#beam').click(function() {
+                    listob.add(new graphObj('beam'));
+                });
+                $('#momentfreesuport').click(function() {
+                    listob.add(new graphObj('momentFreeSupport'));
+                });
+                 $('#moment').click(function() {
+                listob.add(new graphObj('moment'));
+            });
+                $('#load').click(function() {
+                    listob.add(new graphObj('load'));
+                });
+                $('#diLoad').click(function() {
+                    listob.add(new graphObj('q1'));
+                });
+                  $('#toss').click(function() {
+                    listob.deleteAll();
+                });
+            
+                $('#uppdate').click(function() {
+                    if (canHan.graphObjMarked) {
+                        canHan.graphObjMarked.moveTo($('#xCord').val(), $('#yCord').val());
+                    }
+                });
+                
+                 $('#powerFactor').click(function() {
+                    $( "#sliderContainer" ).toggle();
+                });
+                window.onkeydown = function(evt) {
+                    evt.preventDefault();
+                    var tempObj = canHan.graphObjMarked;
+                    if (tempObj) {
+    
+                        switch (evt.keyIdentifier) {
+                            case 'Up':
+                                tempObj.moveTo(tempObj.x, tempObj.y - 10);
+                                break;
+                            case 'Down':
+                                tempObj.moveTo(tempObj.x, tempObj.y + 10);
+                                break;
+                            case 'Right':
+                                tempObj.moveTo(tempObj.x + 10, tempObj.y);
+                                break;
+                            case 'Left':
+                                tempObj.moveTo(tempObj.x - 10, tempObj.y);
+                                break;
+                            case 'U+0009':
+                                canHan.markNext();
+                            default:
+                                console.log('unknown key:' + evt.keyIdentifier);
+    
+                        }
+                        var tempList = listob.intersect(tempObj);
+                        if (tempList) {
+                            for (var i = tempList.length - 1; i >= 0; i--) {
+                                tempList[i].draw();
+                            }
+                        }
+                    }
+                };
+                $('#first_menu').click(function() {
+                    var elements = document.querySelectorAll("#static_menu li:not(:first-child)");
+                    for (var i = 0; i < elements.length; i++) {
+                        // console.log(elements);
+                        //console.log(elements[i].className);
+                    }
+                });
+                $('#background').click(function() {
+                    $("#menu").toggle();
+                    $("#background").toggle();
+                    $('#menu').css({
+                        top: 200,
+                        left: 200
+                    });
+                    canHan.onUpp();
+                });
+                canvas.addEventListener("contextmenu", function(evt) {
+                    evt.preventDefault();
+                    var mousePos = getMousePos(canvas, evt);
+                    canHan.onRightClick(mousePos.x, mousePos.y);
+    
+                }, false);
+    
+                canvas.addEventListener("mousedown", function(evt) {
+    
+                    var mousePos = getMousePos(canvas, evt);
+                    canHan.onClick(mousePos.x, mousePos.y);
+                }, false);
+    
+                canvas.addEventListener('mousemove', function(evt) {
+                    var mousePos = getMousePos(canvas, evt);
+                    canHan.onMove(mousePos.x, mousePos.y);
+                }, false);
+                canvas.addEventListener('mouseup', function(evt) {
+                    canHan.onUpp();
+                    //arr.moveTo(mousePos.x,mousePos.y);
+                }, false);
+    
+    
+            
+    
+    
+            //var testcon = canvas.getContext('2d');
+            //plotPoints(canvas,A, 10);
+            //plotLine(canvas,A);
+            // var context = canvas.getContext('2d');
+            // context.beginPath();
+            // context.moveTo(100, 150);
+            // context.lineTo(450, 50);
+            // context.stroke();
+        </script>
+    </body>
+
+</html>
