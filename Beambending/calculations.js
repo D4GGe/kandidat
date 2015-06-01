@@ -81,7 +81,7 @@
                                 return hap.EI*hap.q * (x - hap.xCord)*(x - hap.xCord)*(x - hap.xCord)*(x - hap.xCord)/24;
                             };
                             hap.qM = function(x){
-                                return hap.EI*hap.q *(x-hap.xCord)*(x-hap.xCord)/2;
+                                return hap.q *(x-hap.xCord)*(x-hap.xCord)/2;
                             };
                             hap.qT = function(x){
                                 return hap.EI*hap.q*(x-hap.xCord);
@@ -237,13 +237,14 @@
                     for (var x = has[i].xCord; x < has[i + 1].xCord; x = x + h) {
                         count++;
                         var wEkv = [EI * x * x * x / 6, EI * x * x / 2, EI * x, EI];
-                        var TEkv = [-x, -1, 0, 0];
-                        var MEkv = [-1, 0, 0, 0];
+                        var TEkv = [1, 0, 0, 0];
+                        var MEkv = [x, 1, 0, 0];
                         w.push(numeric.dot(wEkv, constVec)+has[i].qW(x));
                         //console.log(wEkv + ' : ' + constVec);
-                        
-                        M.push(numeric.dot(TEkv, constVec)+has[i].qM(x));
-                        T.push(numeric.dot(MEkv, constVec)+has[i].qT(x));
+                        console.log(has[i].qM(x));
+                        M.push(-EI*(numeric.dot(MEkv, constVec)+has[i].qM(x)));
+                        console.log(has[i].qM(x));
+                        T.push(-EI*(numeric.dot(TEkv, constVec)+has[i].qT(x)));
                     };
                 };
                 return [w, M, T];
@@ -322,7 +323,7 @@
                                 i.T = j.T + i.T;
                             };
                             allHappenings.splice(count, 2);
-                            allHappenings.push(new happening(i.type, i.xCord, [i.M, i.T, 0], i.EI));
+                            allHappenings.push(new o.happening(i.type, i.xCord, [i.M, i.T, 0], i.EI));
                             count = -1;
                             allHappenings.sort(function(a, b) {
                                 return a.xCord - b.xCord;

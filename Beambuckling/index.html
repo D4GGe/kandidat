@@ -18,23 +18,24 @@
         <div class="container-fluid">
             <div class="row">
               <div class="col-sm-4 col-md-2">
-                <div class="thumbnail">
+                <div class="thumbnail" style="height:520px">
       <img src="dep_knack/img/EulerOne.png" alt="1">
-        <img src="dep_knack/img/EulerTwoEQ.png" alt="1">
+        <img src="dep_knack/img/EulerOneEQ.png" alt="1">
       <div class="caption">
                   <p>EI</p>
                   <input type="text" class="slider1 EI"  value="" data-slider-min="0" data-slider-max="10" data-slider-step="0.1" data-slider-value="5" data-slider-orientation="horizontal" data-slider-selection="after" >
                   <p>P</p>
                   <input type="text" class="slider1 P"  value="" data-slider-min="0" data-slider-max="100" data-slider-step="0.1" data-slider-value="5" data-slider-orientation="horizontal" data-slider-selection="after" >
-                  x
+                  
                   </div>
                 </div>
               </div>
               <div class="col-sm-4 col-md-2">
-                <div class="thumbnail">
+                <div class="thumbnail" style="height:520px">
       <img src="dep_knack/img/EulerTwo.png" alt="1">
         <img src="dep_knack/img/EulerTwoEQ.png" alt="1">
       <div class="caption">
+        
                   <p>EI</p>
                   <input type="text" class="slider2 EI"  value="" data-slider-min="0" data-slider-max="10" data-slider-step="0.1" data-slider-value="4" data-slider-orientation="horizontal" data-slider-selection="after" >
                   <p>P</p>
@@ -44,10 +45,11 @@
                </div>
                 </div>
               <div class="col-sm-4 col-md-2">
-                <div class="thumbnail">
+                <div class="thumbnail" style="height:520px">
       <img src="dep_knack/img/EulerThree.png" alt="1">
         <img src="dep_knack/img/EulerThreeEQ.png" alt="1">
       <div class="caption">
+        <br>
                   <p>EI</p>
                   <input type="text" class="slider3 EI"  value="" data-slider-min="0" data-slider-max="10" data-slider-step="0.1" data-slider-value="3" data-slider-orientation="horizontal" data-slider-selection="after" >
                   <p>P</p>
@@ -57,7 +59,7 @@
                 </div>
               </div>
               <div class="col-sm-4 col-md-2">
-                <div class="thumbnail">
+                <div class="thumbnail" style="height:520px">
       <img src="dep_knack/img/EulerFour.png" alt="1">
          <img src="dep_knack/img/EulerFourEQ.png" alt="1">
       <div class="caption">
@@ -70,7 +72,7 @@
                 </div>
               </div>
               <div class="col-sm-4 col-md-2">
-                <div class="thumbnail">
+                <div class="thumbnail" style="height:520px">
       <img src="dep_knack/img/EulerFive.png" alt="1">
         <img src="dep_knack/img/EulerFiveEQ.png" alt="1">
       <div class="caption">
@@ -285,19 +287,19 @@
                         }else{
                             ctx1.fillStyle = "green";
                         }
-                        ctx1.fillText(test.type ,test.EI*scaleEI,450-test.P*scaleP);
+                        ctx1.fillText(test.type ,test.EI*scaleEI,450-test.P/scaleP);
 
                     }
                     ctx2.beginPath();
-                    ctx2.strokeStyle='#ffffff';
+                    ctx2.strokeStyle='#000';
 
                     for (var i= 1; i<=5; i++) {
 
-                      var temp = calculateBrake(i,450/scaleEI,this.l);
+                      var temp = calculateBrake(i,450*scaleEI,this.l);
 
 
                       ctx2.moveTo(0,450);
-                      ctx2.lineTo(450*scaleP,450-temp*scaleEI);
+                      ctx2.lineTo(450*scaleP,450-temp/scaleEI);
                     }
 
                     ctx2.stroke();

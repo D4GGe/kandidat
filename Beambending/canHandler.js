@@ -74,7 +74,7 @@
                             //////////////////////////////////////////////
                             if(self.drawGraph){
                              var defl = values[1];
-                            defl = numeric.mul(10, defl);
+                            defl = numeric.mul(-10, defl);
                             defl = numeric.add(tempBeams[0].y + 260, defl);
     
                             var canvas = document.getElementById('myCanvas');
